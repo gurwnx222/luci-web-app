@@ -8,8 +8,14 @@ import { userAgent } from "next/server";
 export default function SignupStep4() {
   const router = useRouter();
   const [selected, setSelected] = useState([]);
+  const [error, setError] = useState(false); 
 
   const completeProfile = () => {
+    if(selected.length === 0){
+      setError(true);
+      return;
+    }
+    setError(false);
     router.push("/login");   
   }
 
@@ -30,6 +36,9 @@ export default function SignupStep4() {
     "Others",
     "Nuad Thai",
   ];
+
+
+
   return (
     <div className="bg-[#FDE5E0] min-h-screen w-full flex flex-col items-center">
       <Navbar />
@@ -67,7 +76,15 @@ export default function SignupStep4() {
               );
             })}
           </div>
+
+          {error && 
+          <p className="text-red-600 text-sm mt-2 font-semibold">
+              * This field is required
+          </p>
+          }
         </div>
+
+      
         <div className="flex   flex-col items-center mx-auto rounded-3xl h-12 mt-4 bg-[#D96073] w-[40%] justify-center">
           <button
           type="button"

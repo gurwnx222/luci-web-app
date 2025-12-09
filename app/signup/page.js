@@ -10,7 +10,9 @@ export default function SignupStep1() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    e.preventDefault();
+
     router.push("/signup/step2");
   };
 
@@ -39,7 +41,8 @@ export default function SignupStep1() {
           </h1>
 
           <div className="w-full max-w-sm space-y-4 mt-10">
-            <label
+          <form onSubmit={handleNext} className="relative">
+              <label
               htmlFor="email"
               className="text-[#5F5F60] font-bold text-[18px] leading-0"
             >
@@ -51,6 +54,7 @@ export default function SignupStep1() {
               placeholder=""
               className="w-full mt-2 mb-8 text-black p-3 rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0"
               value={form.email}
+               required
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
             <label
@@ -66,6 +70,7 @@ export default function SignupStep1() {
               id="password"
               className="w-full mt-2 text-black p-3 rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0"
               value={form.password}
+              required
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
 
@@ -73,17 +78,19 @@ export default function SignupStep1() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute left-133 top-112 -translate-y-1/2 text-[#D96073]"
+              className="absolute left-86 top-42 -translate-y-1/2 text-[#D96073]"
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
 
             <button
-              onClick={handleNext}
+              type="submit"
               className="w-[80%] bg-[#D96073] cursor-pointer flex justify-center items-center mt-4 text-[#FFF6EF] mx-auto font-black text-[18px]  py-3 rounded-xl shadow-[0px_4px_20px_-4px_#BA7F88D9]"
             >
               Create my account
             </button>
+          </form>
+          
 
             <p className="font-light text-[16px] mt-5 leadin-[100%] text-[#5F5F60] text-center">
               or sign up with

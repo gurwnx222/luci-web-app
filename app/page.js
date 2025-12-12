@@ -1,21 +1,22 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 function page() {
   return (
     <div className="bg-[#FDE5E0] w-screen h-screen">
-      <nav className="flex  pt-17 pl-30 pr-30 justify-between     ">
-        <div className="relative flex gap-2">
+       <nav className="flex justify-between items-center pt-10 px-20">
+        <div className="flex gap-2 items-center">
           <Image src="/logo.png" width={55} height={55} alt="logo" />
-          <div className="w-[67px] h-[45px] font-bold text-[36px] text-[#262628]">
-            Luci
-          </div>
+          <div className="font-bold text-[36px] text-[#262628]">Luci</div>
         </div>
-        <button className="bg-[#EDCFC9] relative w-[142px] h-14 text-[#262628] font-bold text-[18px] rounded-2xl cursor-pointer">
+
+        <Link href="/login"> 
+          <button className="bg-[#EDCFC9] w-[142px] h-14 text-[#262628] font-bold text-[18px] rounded-2xl">
           Login
         </button>
+        </Link>
       </nav>
-
       {/*Sections */}
       <section className="text-black   flex ">
         {/* left side */}
@@ -31,9 +32,12 @@ function page() {
 
           {/* buttonn */}
           <div>
-            <button className="w-[232px] rounded-2xl text-[#FFF6EF] mt-10 h-[69px] bg-[#D96073]">
-              Get Started For Free
+          <Link href="/signup">
+            <button className="w-[232px] rounded-2xl cursor-pointer text-[#FFF6EF] mt-10 h-[69px] bg-[#D96073]">
+            Get Started For Free
+              
             </button>
+            </Link> 
           </div>
         </div>
 

@@ -10,7 +10,8 @@ export default function SignupStep1() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    e.preventDefault();
     router.push("/home");
   };
 

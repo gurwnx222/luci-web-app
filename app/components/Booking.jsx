@@ -89,10 +89,10 @@ export default function BookingPage() {
               <div className="font-normal text-[16px] leading-[100%] text-[#5F5F60] ">
                 Bio -
               </div>
-              <div className="font-normal text-[24px] leading-[100%] text-[#262628] ">
+              <div className="font-normal text-[20px] leading-[100%] text-[#262628] ">
                 Age - {person.age}
               </div>
-              <div className="font-normal text-[24px] leading-[100%] text-[#262628] ">
+              <div className="font-normal text-[20px] leading-[100%] text-[#262628] ">
                 Weight - {person.weight}
               </div>
             </div>

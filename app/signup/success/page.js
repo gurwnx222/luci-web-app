@@ -1,100 +1,82 @@
+// app/signup/success/page.js
 "use client";
-import { useState } from "react";
-import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { userAgent } from "next/server";
+import Navbar from "../components/Navbar";
 
-
-export default function SignupStep4() {
+export default function SignupSuccess() {
   const router = useRouter();
-  const [selected, setSelected] = useState([]);
-  const [error, setError] = useState(false); 
+  const [userName, setUserName] = useState("");
 
-  const completeProfile = () => {
-    if(selected.length === 0){
-      setError(true);
+  useEffect(() => {
+    const profile = localStorage.getItem("userProfile");
+    if (!profile) {
+      router.push("/signup");
       return;
     }
-    setError(false);
-    router.push("/login");   
-  }
 
-  const toggleSelection = (item) =>{
-    setSelected(prev => 
-      prev.includes(item)
-      ? prev.filter(i => i !== item) // remove
-      : [...prev, item] // add
-    );
-  };
+    const data = JSON.parse(profile);
+    setUserName(data.name || "User");
 
-  const options = [
-    "Neck/Shoulder",
-    "Oil massage",
-    "Foot massage",
-    "Aromatherapy",
-    "Hot compress",
-    "Others",
-    "Nuad Thai",
-  ];
+    const timer = setTimeout(() => {
+      router.push("/home");
+    }, 3000);
 
-
+    return () => clearTimeout(timer);
+  }, [router]);
 
   return (
-    <div className="bg-[#FDE5E0] min-h-screen w-full flex flex-col items-center">
+    <div className="min-h-screen bg-[#FDE5E0] flex flex-col">
       <Navbar />
 
-      {/* container */}
-      <section className="bg-[#FEC9BE] w-[690px]  p-10 mt-8 rounded-4xl flex flex-col  ">
-        <div className="flex flex-col gap-4 mt-6 leading-[100%] items-center justify-center">
-          <h1 className=" font-bold text-[32px]   text-[#262628] ">
-            Complete your profile
-          </h1> 
-          <p className="font-bold text-[18px]  text-[#5F5F60]">
-            Give us important information about <br /> your business to get you
-            started
-          </p>
-        </div>
-        <div className="text-[#5F5F60] mt-10 px-20  font-bold leading-[100%] text-[18px]">
-          What kind of massages you provide??
-        </div>
-        <div className="w-full border-2 border-dashed border-[#D96073]  p-4 rounded-2xl mt-4">
-          <div className="grid grid-cols-3 gap-3 "  >
-            {options.map((item, index) => {
-              const isSelected = selected.includes(item);
-              return (
-              <button
-                key={index}
-                onClick={() => toggleSelection(item)}
-                className={`py-2 cursor-pointer  rounded-xl font-normal text-[14px]  transition-all duration-200 ${
-                  isSelected
-                    ? "bg-[#F2BAC3] text-[#D96073]"
-                    : "bg-[#F5C8BF] text-[#5F5F60]"
-                } `}
+      <div className="flex-1 flex items-center justify-center px-4">
+        <div className="bg-[#FEC9BE] rounded-3xl lg:rounded-4xl p-8 sm:p-12 lg:p-16 text-center max-w-2xl w-full mx-4">
+          <div className="mb-6 sm:mb-8">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#D96073] rounded-full flex items-center justify-center mx-auto">
+              <svg
+                className="w-8 h-8 sm:w-10 sm:h-10 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                {item}
-              </button>
-              );
-            })}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={3}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
           </div>
 
-          {error && 
-          <p className="text-red-600 text-sm mt-2 font-semibold">
-              * This field is required
-          </p>
-          }
-        </div>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#262628] mb-4">
+            Welcome, {userName}!
+          </h1>
 
-      
-        <div className="flex   flex-col items-center mx-auto rounded-3xl h-12 mt-4 bg-[#D96073] w-[40%] justify-center">
-          <button
-          type="button"
-          onClick={completeProfile}
-          className="text-[18px] cursor-pointer font-bold text-[#FFF6EF]"
-          >
-            Complete my profile
-          </button>
+          <p className="text-lg sm:text-xl lg:text-2xl text-[#5F5F60] font-semibold mb-2">
+            Your profile is complete
+          </p>
+
+          <p className="text-sm sm:text-base text-[#5F5F60] mb-8">
+            Redirecting you to your dashboard...
+          </p>
+
+          <div className="flex gap-2 justify-center">
+            <div
+              className="w-2 h-2 bg-[#D96073] rounded-full animate-bounce"
+              style={{ animationDelay: "0s" }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-[#D96073] rounded-full animate-bounce"
+              style={{ animationDelay: "0.2s" }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-[#D96073] rounded-full animate-bounce"
+              style={{ animationDelay: "0.4s" }}
+            ></div>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

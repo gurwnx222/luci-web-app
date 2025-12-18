@@ -24,7 +24,7 @@ module.exports = {
         '150': '37.5rem',     // 600px
       },
       rotate: {
-        '345': '345deg',
+        '345': '345deg', // Custom rotation for PRO Plan card design on landing page
       },
       translate: {
         '15': '3.75rem',      // 60px

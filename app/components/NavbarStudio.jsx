@@ -9,11 +9,10 @@ export default function NavbarStudio() {
       <div className="flex items-center gap-2">
         <Image
           src="/luci_logo.png"
-          className="rounded-full"
+          className="rounded-full w-10 h-10 sm:w-[43px] sm:h-[43px]"
           width={43}
           height={43}
           alt="logo"
-          style={{ width: 'auto', height: 'auto' }}
         />
         <div className="flex flex-col gap-1">
           <div className="font-bold text-base sm:text-lg leading-tight text-[#FFF6EF]">Zen Thai Studio</div>

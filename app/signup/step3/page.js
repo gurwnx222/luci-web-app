@@ -23,7 +23,7 @@ export default function SignupStep3() {
     };
 
     localStorage.setItem("profileStep3", JSON.stringify(step3Data));
-    router.push("/signup/step4");
+    router.push("/home");
   };
 
   return (

@@ -11,30 +11,31 @@ export default function Home() {
 
 
   return (
-    <div className="bg-[#262628] h-screen  w-screen">
-      <section className="w-full flex h-auto">
-        <div className="flex flex-col w-1/3">
-          <div className="w-full px-10 py-14">
+    <div className="bg-[#262628] min-h-screen w-full">
+      <section className="w-full flex flex-col lg:flex-row h-auto min-h-screen">
+        <div className="flex flex-col w-full lg:w-1/3 xl:w-1/4">
+          <div className="w-full px-4 sm:px-6 lg:px-10 py-8 sm:py-10 lg:py-14">
             <NavbarStudio />
           </div>
           {/* left side option bar */}
-          <div className="w-full px-10">
-            <div className="text-[14px] font-normal leading-[100%] text-[#FFF6EF]">
+          <div className="w-full px-4 sm:px-6 lg:px-10">
+            <div className="text-sm font-normal leading-tight text-[#FFF6EF]">
               Main Menu
             </div>
 
-            <div className="mt-4 flex flex-col gap-3">
+            <div className="mt-4 flex flex-row lg:flex-col gap-2 sm:gap-3 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
               <button
-                className={`cursor-pointer flex p-4  gap-2 h-11 items-center ${activeTab === "booking"  ? "bg-[#D96073] rounded-2xl" : ""}`}
+                className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${activeTab === "booking"  ? "bg-[#D96073] rounded-2xl" : ""}`}
                 value="booking"
                 onClick={() => setActiveTab("booking")}
               >
                 <svg
-                  width="32"
-                  height="32"
+                  width="24"
+                  height="24"
                   viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0"
                 >
                   <g clipPath="url(#clip0_545_63)">
                     <path
@@ -48,38 +49,40 @@ export default function Home() {
                     </clipPath>
                   </defs>
                 </svg>
-                Bookings
+                <span className="text-sm sm:text-base">Bookings</span>
               </button>
               <button
-                 className={`cursor-pointer flex p-4  gap-2 h-11 items-center ${activeTab === "chat" ? "bg-[#D96073] rounded-2xl" : ""}`}
+                 className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${activeTab === "chat" ? "bg-[#D96073] rounded-2xl" : ""}`}
                 value="chat"
                 onClick={() => setActiveTab("chat")}
               >
                 <svg
-                  width="34"
-                  height="32"
+                  width="24"
+                  height="24"
                   viewBox="0 0 34 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0"
                 >
                   <path
                     d="M13.3333 3C20.6973 3 26.6667 8.96934 26.6667 16.3333C26.6667 23.6973 20.6973 29.6667 13.3333 29.6667H2.66667C1.95942 29.6667 1.28115 29.3857 0.781049 28.8856C0.280952 28.3855 0 27.7072 0 27V16.3333C0 8.96934 5.96934 3 13.3333 3ZM13.3333 5.66667C10.5044 5.66667 7.79125 6.79047 5.79086 8.79086C3.79047 10.7913 2.66667 13.5044 2.66667 16.3333V27H13.3333C16.1623 27 18.8754 25.8762 20.8758 23.8758C22.8762 21.8754 24 19.1623 24 16.3333C24 13.5044 22.8762 10.7913 20.8758 8.79086C18.8754 6.79047 16.1623 5.66667 13.3333 5.66667ZM13.3333 19C13.6732 19.0004 14 19.1305 14.2472 19.3638C14.4943 19.5971 14.643 19.9159 14.6629 20.2552C14.6828 20.5945 14.5724 20.9285 14.3543 21.1891C14.1362 21.4497 13.8268 21.6172 13.4893 21.6573L13.3333 21.6667H9.33333C8.9935 21.6663 8.66663 21.5362 8.41951 21.3029C8.1724 21.0696 8.02369 20.7507 8.00377 20.4115C7.98386 20.0722 8.09423 19.7382 8.31235 19.4776C8.53047 19.217 8.83987 19.0495 9.17734 19.0093L9.33333 19H13.3333ZM17.3333 13.6667C17.687 13.6667 18.0261 13.8071 18.2761 14.0572C18.5262 14.3072 18.6667 14.6464 18.6667 15C18.6667 15.3536 18.5262 15.6928 18.2761 15.9428C18.0261 16.1929 17.687 16.3333 17.3333 16.3333H9.33333C8.97971 16.3333 8.64057 16.1929 8.39053 15.9428C8.14048 15.6928 8 15.3536 8 15C8 14.6464 8.14048 14.3072 8.39053 14.0572C8.64057 13.8071 8.97971 13.6667 9.33333 13.6667H17.3333Z"
                     fill="#FFF6EF"
                   />
                 </svg>
-                Chats
+                <span className="text-sm sm:text-base">Chats</span>
               </button>
               <button
-                 className={`cursor-pointer flex p-4  gap-2 h-11 items-center ${activeTab === "subscription" ? "bg-[#D96073] rounded-2xl" : ""}`}
+                 className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${activeTab === "subscription" ? "bg-[#D96073] rounded-2xl" : ""}`}
                 value="subscription"
                 onClick={() => setActiveTab("subscription")}
               >
                 <svg
-                  width="32"
-                  height="32"
+                  width="24"
+                  height="24"
                   viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="flex-shrink-0"
                 >
                   <g clipPath="url(#clip0_545_68)">
                     <path
@@ -93,14 +96,14 @@ export default function Home() {
                     </clipPath>
                   </defs>
                 </svg>
-                Subscription
+                <span className="text-sm sm:text-base">Subscription</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* right side main content */}
-        <div className="w-3/2 overflow-hidden bg-[#EED4CF] h-[700px] my-9.5 rounded-4xl">
+        <div className="w-full lg:w-2/3 xl:w-3/4 overflow-hidden bg-[#EED4CF] min-h-[500px] lg:h-[700px] my-4 mx-4 lg:my-9.5 lg:mx-0 lg:mr-4 rounded-4xl">
           {activeTab === "booking" && <BookingPage />}
           {activeTab === "chat" && <ChatPage />}
           {activeTab === "subscription" && <SubscriptionPage />}

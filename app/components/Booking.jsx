@@ -63,47 +63,48 @@ export default function BookingPage() {
 
   return (
     <div className="w-full h-auto">
-      <div className="font-bold text-[40px] static text-[#262628] px-22 pt-12 pb-6">
+      <div className="font-bold text-2xl sm:text-3xl md:text-[40px] text-[#262628] px-4 sm:px-8 md:px-12 lg:px-22 pt-8 sm:pt-10 md:pt-12 pb-4 sm:pb-6">
         Booking Requests
       </div>
-      <div className="grid grid-cols-3 px-22 overflow-y-auto h-[550px]       gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 px-4 sm:px-8 md:px-12 lg:px-22 overflow-y-auto max-h-[450px] sm:max-h-[500px] md:max-h-[550px] gap-4 sm:gap-6">
         {people.map((person) => (
           <div
             key={person.id}
-            className="bg-[#EDCFC9] p-10  border-2 rounded-4xl  border-[#FFAE9E] w-[313px] h-[290px]"
+            className="bg-[#EDCFC9] p-6 sm:p-8 md:p-10 border-2 rounded-4xl border-[#FFAE9E] w-full max-w-[313px] mx-auto h-auto"
           >
-            <div className="flex gap-2 justify-start  items-center">
+            <div className="flex gap-2 justify-start items-center">
               <Image
                 src={person.image}
                 alt={person.name}
                 width={43}
                 height={43}
-                className="rounded-4xl border-2 border-[#999999] object-cover"
+                className="rounded-4xl border-2 border-[#999999] object-cover w-10 h-10 sm:w-[43px] sm:h-[43px]"
               />{" "}
-              <div className="font-normal text-[16px] text-[#262628]">
+              <div className="font-normal text-sm sm:text-base text-[#262628]">
                 {person.name}
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 mt-8">
-              <div className="font-normal text-[16px] leading-[100%] text-[#5F5F60] ">
+            <div className="flex flex-col gap-2 mt-6 sm:mt-8">
+              <div className="font-normal text-sm sm:text-base leading-tight text-[#5F5F60]">
                 Bio -
               </div>
-              <div className="font-normal text-[20px] leading-[100%] text-[#262628] ">
+              <div className="font-normal text-lg sm:text-xl leading-tight text-[#262628]">
                 Age - {person.age}
               </div>
-              <div className="font-normal text-[20px] leading-[100%] text-[#262628] ">
+              <div className="font-normal text-lg sm:text-xl leading-tight text-[#262628]">
                 Weight - {person.weight}
               </div>
             </div>
-            <div className="flex gap-30 mt-4 ">
-              <button className="rounded-2xl bg-[#F69DAB] cursor-pointer">
+            <div className="flex gap-4 sm:gap-6 md:gap-30 mt-4">
+              <button className="rounded-2xl bg-[#F69DAB] cursor-pointer hover:bg-[#F28B9C] transition-colors p-2 sm:p-0">
                 <svg
-                  width="46"
-                  height="46"
+                  width="40"
+                  height="40"
                   viewBox="0 0 46 46"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8 sm:w-10 sm:h-10"
                 >
                   <path
                     d="M29.2275 31.1127C29.4775 31.3628 29.8166 31.5032 30.1703 31.5032C30.5239 31.5032 30.863 31.3628 31.1131 31.1127C31.3631 30.8627 31.5036 30.5235 31.5036 30.1699C31.5036 29.8163 31.3631 29.4772 31.1131 29.2271L24.5134 22.6274L31.1131 16.0278C31.3631 15.7777 31.5036 15.4386 31.5036 15.085C31.5036 14.7313 31.3631 14.3922 31.1131 14.1422C30.863 13.8921 30.5239 13.7516 30.1703 13.7516C29.8166 13.7516 29.4775 13.8921 29.2275 14.1422L22.6278 20.7418L16.0281 14.1422C15.7781 13.8921 15.4389 13.7516 15.0853 13.7516C14.7317 13.7516 14.3926 13.8921 14.1425 14.1422C13.8925 14.3922 13.752 14.7313 13.752 15.085C13.752 15.4386 13.8925 15.7777 14.1425 16.0278L20.7422 22.6274L14.1425 29.2271C13.8925 29.4772 13.752 29.8163 13.752 30.1699C13.752 30.5235 13.8925 30.8627 14.1425 31.1127C14.3926 31.3628 14.7317 31.5032 15.0853 31.5032C15.4389 31.5032 15.7781 31.3628 16.0281 31.1127L22.6278 24.5131L29.2275 31.1127Z"
@@ -111,13 +112,14 @@ export default function BookingPage() {
                   />
                 </svg>
               </button>
-              <button className=" rounded-2xl bg-[#D96073] w-12 cursor-pointer flex justify-center items-center  text-center">
+              <button className="rounded-2xl bg-[#D96073] w-10 sm:w-12 cursor-pointer flex justify-center items-center hover:bg-[#C85563] transition-colors">
                 <svg
-                  width="32"
-                  height="32"
+                  width="28"
+                  height="28"
                   viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 sm:w-7 sm:h-7"
                 >
                   <g clipPath="url(#clip0_545_83)">
                     <path

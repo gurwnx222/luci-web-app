@@ -6,17 +6,18 @@ export default function NavbarStudio() {
     const [plan, setPlan] = useState("Free Plan");
   return (
     <>
-      <div className="flex items-center gap-2 ">
+      <div className="flex items-center gap-2">
         <Image
           src="/luci_logo.png"
           className="rounded-full"
           width={43}
           height={43}
           alt="logo"
+          style={{ width: 'auto', height: 'auto' }}
         />
         <div className="flex flex-col gap-1">
-          <div className="font-bold text-[18px] leading-[100%]">Zen Thai Studio</div>
-          <div className="flex items-center gap-1 font-normal text-[14px] leading-[100%] text-[#999999] ">
+          <div className="font-bold text-base sm:text-lg leading-tight text-[#FFF6EF]">Zen Thai Studio</div>
+          <div className="flex items-center gap-1 font-normal text-xs sm:text-sm leading-tight text-[#999999]">
             <svg
               width="7"
               height="7"

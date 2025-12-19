@@ -95,8 +95,9 @@ export default function SignupStep1() {
 
               <input
                 type="email"
+                id="email"
                 placeholder=""
-                className="w-full mt-2 mb-6 sm:mb-8 text-black p-3 rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0"
+                className="w-full mt-2 mb-6 sm:mb-8 text-black p-3 sm:p-4 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0 min-h-[48px]"
                 value={form.email}
                 required
                 disabled={loading}
@@ -110,12 +111,12 @@ export default function SignupStep1() {
                 Create password
               </label>
 
-              <div className="relative">
+              <div className="relative mt-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder=""
                   id="password"
-                  className="w-full mt-2 text-black p-3 pr-12 rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0"
+                  className="w-full text-black p-3 sm:p-4 pr-12 sm:pr-14 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0 min-h-[48px]"
                   value={form.password}
                   required
                   disabled={loading}
@@ -127,7 +128,8 @@ export default function SignupStep1() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#D96073]"
+                  className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-[#D96073] p-2 touch-manipulation"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -142,13 +144,13 @@ export default function SignupStep1() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-[80%] bg-[#D96073] cursor-pointer flex justify-center items-center mt-4 text-[#FFF6EF] mx-auto font-black text-base sm:text-lg py-3 rounded-xl shadow-[0px_4px_20px_-4px_#BA7F88D9] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-[80%] bg-[#D96073] cursor-pointer flex justify-center items-center mt-6 sm:mt-4 text-[#FFF6EF] mx-auto font-black text-base sm:text-lg py-3 sm:py-4 rounded-xl shadow-[0px_4px_20px_-4px_#BA7F88D9] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C85563] transition-colors min-h-[48px] touch-manipulation"
               >
                 {loading ? "Creating account..." : "Create my account"}
               </button>
             </form>
 
-            <p className="font-light text-sm sm:text-base mt-5 leading-tight text-[#5F5F60] text-center">
+            <p className="font-light text-sm sm:text-base mt-5 sm:mt-6 leading-tight text-[#5F5F60] text-center">
               or sign up with
             </p>
 
@@ -156,7 +158,7 @@ export default function SignupStep1() {
               type="button"
               onClick={handleGoogleSignup}
               disabled={loading}
-              className="flex bg-[#EDCFC9] w-full p-4 sm:p-5 rounded-2xl border border-[#E7C9C3] justify-center items-center gap-3 sm:gap-4 text-sm sm:text-base font-normal leading-tight text-[#5F5F60] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex bg-[#EDCFC9] w-full p-4 sm:p-5 rounded-2xl border border-[#E7C9C3] justify-center items-center gap-3 sm:gap-4 text-sm sm:text-base font-normal leading-tight text-[#5F5F60] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#E5C5BF] transition-colors min-h-[56px] touch-manipulation"
             >
               <svg
                 width="18"
@@ -187,32 +189,18 @@ export default function SignupStep1() {
           </div>
         </div>
 
-        {/* RIGHT SIDE - STEPS */}
-        <div className="flex flex-col lg:flex-row lg:pl-20 xl:pl-40 mt-6 lg:mt-10 items-center justify-center lg:justify-start lg:items-center w-full lg:w-[45.5%] gap-6 lg:gap-0 pb-8 lg:pb-0">
-          <div className="flex lg:flex-col gap-8 lg:gap-10 items-center lg:items-start">
-            <div className="flex flex-col items-center gap-2">
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#D96073]">
-                01
-              </div>
-              <div className="text-sm sm:text-base lg:text-lg font-semibold text-[#5F5F60] whitespace-nowrap">
-                Create account
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#5F5F60]">
-                02
-              </div>
-              <div className="text-sm sm:text-base lg:text-lg font-semibold text-[#5F5F60] whitespace-nowrap">
-                Complete profile
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#5F5F60]">
-                03
-              </div>
-              <div className="text-sm sm:text-base lg:text-lg font-semibold text-[#5F5F60] whitespace-nowrap">
-                Thank you
-              </div>
+        {/* RIGHT SIDE - Logo for larger screens */}
+        <div className="hidden lg:flex lg:pl-20 xl:pl-40 mt-6 lg:mt-10 items-center justify-center w-full lg:w-[45.5%] pb-8 lg:pb-0">
+          <div className="relative flex gap-2 items-center">
+            <Image
+              src="/logo.png"
+              width={70}
+              height={55}
+              alt="logo"
+              className="w-14 h-11 sm:w-[70px] sm:h-[55px]"
+            />
+            <div className="font-bold text-3xl sm:text-[36px] text-[#262628]">
+              Luci
             </div>
           </div>
         </div>

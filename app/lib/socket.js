@@ -1,7 +1,7 @@
 // Socket.IO connection utility
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3000';
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://192.168.18.50:3000';
 
 let socket = null;
 

@@ -133,9 +133,15 @@ export default function SignupStep1() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-[#D96073] p-1"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
-                    {showPassword ? <EyeOff size={18} className="sm:w-5 sm:h-5" /> : <Eye size={18} className="sm:w-5 sm:h-5" />}
+                    {showPassword ? (
+                      <EyeOff size={18} className="sm:w-5 sm:h-5" />
+                    ) : (
+                      <Eye size={18} className="sm:w-5 sm:h-5" />
+                    )}
                   </button>
                 </div>
 

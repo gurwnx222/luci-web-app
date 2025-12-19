@@ -27,16 +27,15 @@ export default function SignupStep3() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDE5E0] flex flex-col items-center pb-8">
+    <div className="min-h-screen bg-[#FDE5E0] flex flex-col items-center pb-8 lg:pb-0">
       <Navbar />
-      <section className="flex bg-[#FEC9BE] mt-4 sm:mt-6 mx-4 sm:mx-auto min-h-[530px] flex-col rounded-3xl lg:rounded-4xl p-6 sm:p-10 w-full max-w-[690px]">
+      <section className="flex bg-[#FEC9BE] mt-4 sm:mt-6 mx-4 sm:mx-auto min-h-[530px] flex-col rounded-3xl lg:rounded-4xl p-6 sm:p-10 w-full max-w-[690px] lg:mr-32 justify-between">
         <div className="flex flex-col gap-6 sm:gap-8">
           <div className="font-bold text-2xl sm:text-[32px] leading-tight text-[#262628]">
             Complete your profile
           </div>
-          <div className="font-bold text-[#5F5F60] leading-tight text-base sm:text-lg">
-            Give us important information about{" "}
-            <br className="hidden sm:block" /> your business to get you started
+          <div className="font-bold text-[#5F5F60] leading-snug text-base sm:text-lg">
+            Give us important information about your business to get you started
           </div>
         </div>
 
@@ -45,14 +44,14 @@ export default function SignupStep3() {
             Provide pics of your salon
           </div>
           {file ? (
-            <>
+            <div className="flex flex-col gap-2">
               <span className="text-sm sm:text-base font-semibold text-[#5F5F60] break-words">
                 {file.name}
               </span>
-              <span className="text-sm sm:text-base text-[#262628]">
+              <span className="text-sm sm:text-base text-[#262628] font-semibold">
                 Uploaded ✓
               </span>
-            </>
+            </div>
           ) : (
             <>
               <input
@@ -64,7 +63,7 @@ export default function SignupStep3() {
               />
               <label
                 htmlFor="fileUpload"
-                className="w-[103px] flex items-center justify-center text-black py-3 rounded-xl bg-[#DEAAB2] border-dashed h-[92px] border-2 border-[#D96073] cursor-pointer hover:bg-[#D9A0AA] transition-colors"
+                className="w-[103px] flex items-center justify-center text-black py-3 rounded-xl bg-[#DEAAB2] border-dashed h-[92px] border-2 border-[#D96073] cursor-pointer hover:bg-[#D9A0AA] transition-colors touch-manipulation"
               >
                 <svg
                   width="32"
@@ -90,7 +89,7 @@ export default function SignupStep3() {
         <div className="flex justify-center items-center">
           <button
             onClick={handleSubmit}
-            className="bg-[#D96073] text-[#FFF6EF] h-12 sm:h-14 w-full sm:w-2/3 lg:w-1/2 rounded-3xl font-bold text-lg sm:text-2xl leading-tight hover:bg-[#C85563] transition-colors"
+            className="bg-[#D96073] text-[#FFF6EF] h-12 sm:h-14 w-full sm:w-2/3 lg:w-1/2 rounded-3xl font-bold text-lg sm:text-2xl leading-tight hover:bg-[#C85563] transition-colors min-h-[48px] touch-manipulation"
             type="button"
           >
             Next

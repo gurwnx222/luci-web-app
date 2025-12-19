@@ -59,7 +59,7 @@ export default function DualRangeSlider({ minValue = 0, maxValue = 100 }) {
           max={maxValue}
           value={min}
           onChange={handleMin}
-          className="absolute -top-2 w-full appearance-none bg-transparent pointer-events-none"
+          className="absolute -top-2 w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#D96073] [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-[#D96073] [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0"
         />
 
         <input
@@ -68,14 +68,14 @@ export default function DualRangeSlider({ minValue = 0, maxValue = 100 }) {
           max={maxValue}
           value={max}
           onChange={handleMax}
-          className="absolute -top-2 w-full appearance-none bg-transparent pointer-events-none"
+          className="absolute -top-2 w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#D96073] [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-[#D96073] [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0"
         />
       </div>
 
       {/* INPUT BOXES */}
-      <div className="flex justify-between mt-5 gap-4">
+      <div className="flex justify-between mt-6 gap-4">
         <div className="flex flex-col w-1/2">
-          <label className="text-sm font-semibold text-gray-600">Min</label>
+          <label className="text-sm font-semibold text-[#5F5F60] mb-1">Min</label>
 
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B8B8B]">
@@ -85,13 +85,13 @@ export default function DualRangeSlider({ minValue = 0, maxValue = 100 }) {
               type="number"
               value={min}
               onChange={handleMinInput}
-              className="p-3 pl-5 rounded-xl w-30 border border-[#8B8B8B] text-[#8B8B8B]"
+              className="p-3 pl-6 rounded-xl w-full border border-[#8B8B8B] text-[#8B8B8B] focus:outline-none focus:border-[#D96073] min-h-[48px] text-base"
             />
           </div>
         </div>
 
         <div className="flex flex-col w-1/2">
-          <label className="text-sm font-semibold text-gray-600">Max</label>
+          <label className="text-sm font-semibold text-[#5F5F60] mb-1">Max</label>
 
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B8B8B]">
@@ -101,7 +101,7 @@ export default function DualRangeSlider({ minValue = 0, maxValue = 100 }) {
               type="number"
               value={max}
               onChange={handleMaxInput}
-              className="p-3 pl-5 rounded-xl w-30 border border-[#8B8B8B] text-[#8B8B8B]"
+              className="p-3 pl-6 rounded-xl w-full border border-[#8B8B8B] text-[#8B8B8B] focus:outline-none focus:border-[#D96073] min-h-[48px] text-base"
             />
           </div>
         </div>

@@ -29,7 +29,7 @@ export default function SignupStep3() {
   return (
     <div className="min-h-screen bg-[#FDE5E0] flex flex-col items-center pb-8 lg:pb-0">
       <Navbar />
-      <section className="flex bg-[#FEC9BE] mt-4 sm:mt-6 mx-4 sm:mx-auto min-h-[530px] flex-col rounded-3xl lg:rounded-4xl p-6 sm:p-10 w-full max-w-[690px] lg:mr-32">
+      <section className="flex bg-[#FEC9BE] mt-4 sm:mt-6 mx-4 sm:mx-auto min-h-[530px] flex-col rounded-3xl lg:rounded-4xl p-6 sm:p-10 w-full max-w-[690px] lg:mr-32 justify-between">
         <div className="flex flex-col gap-6 sm:gap-8">
           <div className="font-bold text-2xl sm:text-[32px] leading-tight text-[#262628]">
             Complete your profile
@@ -86,7 +86,7 @@ export default function SignupStep3() {
           <DualRangeSlider />
         </div>
 
-        <div className="flex justify-center items-center mt-auto">
+        <div className="flex justify-center items-center">
           <button
             onClick={handleSubmit}
             className="bg-[#D96073] text-[#FFF6EF] h-12 sm:h-14 w-full sm:w-2/3 lg:w-1/2 rounded-3xl font-bold text-lg sm:text-2xl leading-tight hover:bg-[#C85563] transition-colors min-h-[48px] touch-manipulation"

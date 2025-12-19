@@ -9,7 +9,6 @@ import SubscriptionPage from "../components/Subscription";
 export default function Home() {
   const [activeTab, setActiveTab] = useState("booking");
 
-
   return (
     <div className="bg-[#262628] min-h-screen w-full">
       <section className="w-full flex flex-col lg:flex-row h-auto min-h-screen">
@@ -25,7 +24,9 @@ export default function Home() {
 
             <div className="mt-4 flex flex-row lg:flex-col gap-2 sm:gap-3 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
               <button
-                className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${activeTab === "booking"  ? "bg-[#D96073] rounded-2xl" : ""}`}
+                className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${
+                  activeTab === "booking" ? "bg-[#D96073] rounded-2xl" : ""
+                }`}
                 value="booking"
                 onClick={() => setActiveTab("booking")}
               >
@@ -52,7 +53,9 @@ export default function Home() {
                 <span className="text-sm sm:text-base">Bookings</span>
               </button>
               <button
-                 className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${activeTab === "chat" ? "bg-[#D96073] rounded-2xl" : ""}`}
+                className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${
+                  activeTab === "chat" ? "bg-[#D96073] rounded-2xl" : ""
+                }`}
                 value="chat"
                 onClick={() => setActiveTab("chat")}
               >
@@ -72,7 +75,9 @@ export default function Home() {
                 <span className="text-sm sm:text-base">Chats</span>
               </button>
               <button
-                 className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${activeTab === "subscription" ? "bg-[#D96073] rounded-2xl" : ""}`}
+                className={`cursor-pointer flex p-3 sm:p-4 gap-2 h-11 items-center whitespace-nowrap flex-shrink-0 lg:flex-shrink ${
+                  activeTab === "subscription" ? "bg-[#D96073] rounded-2xl" : ""
+                }`}
                 value="subscription"
                 onClick={() => setActiveTab("subscription")}
               >

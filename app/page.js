@@ -5,16 +5,24 @@ import Link from "next/link";
 function page() {
   return (
     <div className="bg-[#FDE5E0] w-full min-h-screen">
-       <nav className="flex justify-between items-center pt-6 sm:pt-8 md:pt-10 px-4 sm:px-8 md:px-12 lg:px-20">
+      <nav className="flex justify-between items-center pt-6 sm:pt-8 md:pt-10 px-4 sm:px-8 md:px-12 lg:px-20">
         <div className="flex gap-2 items-center">
-          <Image src="/logo.png" width={55} height={55} alt="logo" className="w-10 h-10 sm:w-[55px] sm:h-[55px]" />
-          <div className="font-bold text-2xl sm:text-3xl md:text-[36px] text-[#262628]">Luci</div>
+          <Image
+            src="/logo.png"
+            width={55}
+            height={55}
+            alt="logo"
+            className="w-10 h-10 sm:w-[55px] sm:h-[55px]"
+          />
+          <div className="font-bold text-2xl sm:text-3xl md:text-[36px] text-[#262628]">
+            Luci
+          </div>
         </div>
 
-        <Link href="/login"> 
+        <Link href="/login">
           <button className="bg-[#EDCFC9] w-24 sm:w-32 md:w-[142px] h-12 sm:h-14 text-[#262628] font-bold text-sm sm:text-base md:text-[18px] rounded-2xl hover:bg-[#E0C0BA] transition-colors">
-          Login
-        </button>
+            Login
+          </button>
         </Link>
       </nav>
       {/*Sections */}
@@ -22,7 +30,11 @@ function page() {
         {/* left side */}
         <div className="relative lg:ml-30 mt-8 sm:mt-12 md:mt-16 lg:mt-50 w-full lg:w-1/2 flex flex-col gap-4 sm:gap-6">
           <div className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[42px] leading-tight text-[#262628]">
-            Stop Waiting for Walk-Ins. Start <span className="hidden sm:inline"><br /></span> Getting Guaranteed Bookings
+            Stop Waiting for Walk-Ins. Start{" "}
+            <span className="hidden sm:inline">
+              <br />
+            </span>{" "}
+            Getting Guaranteed Bookings
           </div>
           <div className="font-normal text-sm sm:text-base md:text-lg lg:text-[18px] text-[#5F5F60] max-w-full lg:w-[589px] leading-relaxed sm:leading-normal tracking-normal">
             Connect your salon with thousands of customers searching for Thai
@@ -32,23 +44,34 @@ function page() {
 
           {/* buttonn */}
           <div>
-          <Link href="/signup">
-            <button className="w-full sm:w-[232px] rounded-2xl cursor-pointer text-[#FFF6EF] mt-6 sm:mt-8 md:mt-10 h-14 sm:h-16 md:h-[69px] bg-[#D96073] font-semibold text-base sm:text-lg hover:bg-[#C85563] transition-colors">
-            Get Started For Free
-              
-            </button>
-            </Link> 
+            <Link href="/signup">
+              <button className="w-full sm:w-[232px] rounded-2xl cursor-pointer text-[#FFF6EF] mt-6 sm:mt-8 md:mt-10 h-14 sm:h-16 md:h-[69px] bg-[#D96073] font-semibold text-base sm:text-lg hover:bg-[#C85563] transition-colors">
+                Get Started For Free
+              </button>
+            </Link>
           </div>
         </div>
 
         {/* right side */}
-        <div className="relative w-full lg:w-1/2 mt-8 lg:mt-0 mb-8 lg:mb-0 hidden md:block">
+        <div className="relative w-full ml-18 lg:w-1/2 mt-8 lg:mt-0 mb-8 lg:mb-0 hidden md:block">
           <div className="mt-8 lg:mt-30 flex justify-center lg:justify-start">
-            <Image src="/homeCard-1.png" width={313} height={167} alt="card" className="w-48 sm:w-60 md:w-[313px] h-auto" />
+            <Image
+              src="/homeCard-1.png"
+              width={313}
+              height={167}
+              alt="card"
+              className="w-48 sm:w-60 md:w-[313px] h-auto"
+            />
           </div>
 
           <div className="mt-4 lg:-mt-45 ml-32 sm:ml-40 lg:ml-147 flex justify-center lg:justify-start">
-            <Image src="/homeCard-2.png" width={87} height={73} alt="card" className="w-16 sm:w-20 md:w-[87px] h-auto" />
+            <Image
+              src="/homeCard-2.png"
+              width={87}
+              height={73}
+              alt="card"
+              className="w-16 sm:w-20 md:w-[87px] h-auto"
+            />
           </div>
 
           {/* card -3 => there is no png, so writing code */}
@@ -56,7 +79,9 @@ function page() {
             <div className="font-bold text-lg sm:text-xl lg:text-[24px] leading-tight">
               PRO Plan
             </div>
-            <div className="font-bold text-lg sm:text-xl lg:text-[24px] leading-tight">$3</div>
+            <div className="font-bold text-lg sm:text-xl lg:text-[24px] leading-tight">
+              $3
+            </div>
             <ul className="mt-3 sm:mt-5 font-normal text-xs sm:text-[12px] leading-tight text-[#5F5F60]">
               Features -
               <li className="flex text-[#262628] leading-tight items-center gap-1">

@@ -87,7 +87,7 @@ export default function LoginPage() {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-tight text-[#262628]">
             Login to your account
             <div className="font-bold text-[#5F5F60] mt-2.5 text-base sm:text-lg leading-tight">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/signup" className="text-[#D96073] underline">
                 create an account
               </Link>
@@ -105,8 +105,9 @@ export default function LoginPage() {
 
               <input
                 type="email"
+                id="email"
                 placeholder=""
-                className="w-full mt-2 mb-6 sm:mb-8 text-black p-3 rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0"
+                className="w-full mt-2 mb-6 sm:mb-8 text-black p-3 sm:p-4 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0 min-h-[48px]"
                 value={form.email}
                 required
                 disabled={loading}
@@ -120,12 +121,12 @@ export default function LoginPage() {
                 Enter your password
               </label>
 
-              <div className="relative">
+              <div className="relative mt-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder=""
                   id="password"
-                  className="w-full mt-2 text-black p-3 pr-12 rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0"
+                  className="w-full text-black p-3 sm:p-4 pr-12 sm:pr-14 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none border-0 min-h-[48px]"
                   value={form.password}
                   required
                   disabled={loading}
@@ -137,8 +138,9 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#D96073]"
+                  className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-[#D96073] p-2 touch-manipulation"
                   disabled={loading}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -153,13 +155,13 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-[80%] bg-[#D96073] cursor-pointer flex justify-center items-center mt-4 text-[#FFF6EF] mx-auto font-black text-base sm:text-lg py-3 rounded-xl shadow-[0px_4px_20px_-4px_#BA7F88D9] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-[80%] bg-[#D96073] cursor-pointer flex justify-center items-center mt-6 sm:mt-4 text-[#FFF6EF] mx-auto font-black text-base sm:text-lg py-3 sm:py-4 rounded-xl shadow-[0px_4px_20px_-4px_#BA7F88D9] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C85563] transition-colors min-h-[48px] touch-manipulation"
               >
                 {loading ? "Logging in..." : "Login to my account"}
               </button>
             </form>
 
-            <p className="font-light text-sm sm:text-base mt-5 leading-tight text-[#5F5F60] text-center">
+            <p className="font-light text-sm sm:text-base mt-5 sm:mt-6 leading-tight text-[#5F5F60] text-center">
               or Log in with
             </p>
 
@@ -167,7 +169,7 @@ export default function LoginPage() {
               type="button"
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="flex bg-[#EDCFC9] w-full p-4 sm:p-5 rounded-2xl border border-[#E7C9C3] justify-center items-center gap-3 sm:gap-4 text-sm sm:text-base font-normal leading-tight text-[#5F5F60] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex bg-[#EDCFC9] w-full p-4 sm:p-5 rounded-2xl border border-[#E7C9C3] justify-center items-center gap-3 sm:gap-4 text-sm sm:text-base font-normal leading-tight text-[#5F5F60] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#E5C5BF] transition-colors min-h-[56px] touch-manipulation"
             >
               <svg
                 width="18"

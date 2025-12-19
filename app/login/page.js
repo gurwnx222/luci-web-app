@@ -87,7 +87,7 @@ export default function LoginPage() {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-tight text-[#262628]">
             Login to your account
             <div className="font-bold text-[#5F5F60] mt-2.5 text-base sm:text-lg leading-tight">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/signup" className="text-[#D96073] underline">
                 create an account
               </Link>

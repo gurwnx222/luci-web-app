@@ -29,7 +29,7 @@ export default function SignupStep3() {
   return (
     <div className="min-h-screen bg-[#FDE5E0] flex flex-col items-center pb-8 lg:pb-0">
       <Navbar />
-      <section className="flex bg-[#FEC9BE] mt-4 sm:mt-6 mx-4 sm:mx-auto min-h-[530px] flex-col rounded-3xl lg:rounded-4xl p-6 sm:p-10 w-full max-w-[690px] lg:mr-32 justify-between">
+      <section className="flex bg-[#FEC9BE] mt-4 sm:mt-6 mx-4 sm:mx-auto min-h-[530px] flex-col rounded-3xl lg:rounded-4xl p-6 sm:p-10 lg:px-16 w-full max-w-[690px] justify-between">
         <div className="flex flex-col gap-6 sm:gap-8">
           <div className="font-bold text-2xl sm:text-[32px] leading-tight text-[#262628]">
             Complete your profile
@@ -63,11 +63,10 @@ export default function SignupStep3() {
               />
               <label
                 htmlFor="fileUpload"
-                className="w-[103px] flex items-center justify-center text-black py-3 rounded-xl bg-[#DEAAB2] border-dashed h-[92px] border-2 border-[#D96073] cursor-pointer hover:bg-[#D9A0AA] transition-colors touch-manipulation"
+                className="w-24 sm:w-[103px] flex items-center justify-center text-black py-3 rounded-xl bg-[#DEAAB2] border-dashed h-20 sm:h-[92px] border-2 border-[#D96073] cursor-pointer hover:bg-[#D9A0AA] transition-colors touch-manipulation"
               >
                 <svg
-                  width="32"
-                  height="32"
+                  className="w-8 h-8"
                   viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"

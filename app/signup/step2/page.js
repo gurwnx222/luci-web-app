@@ -33,8 +33,8 @@ export default function SignupStep2() {
       <Navbar />
 
       {/* MAIN BOX */}
-      <section className="flex items-center justify-center mt-4 sm:mt-8 px-4 lg:pr-32">
-        <div className="w-full max-w-[700px] min-h-[530px] bg-[#FEC9BE] rounded-3xl lg:rounded-4xl px-6 sm:px-12 lg:px-40 py-6 sm:py-8 flex flex-col items-start">
+      <section className="flex items-center justify-center mt-4 sm:mt-8 px-4">
+        <div className="w-full max-w-[700px] min-h-[530px] bg-[#FEC9BE] rounded-3xl lg:rounded-4xl px-6 sm:px-12 lg:px-16 py-6 sm:py-8 flex flex-col items-start">
           {/* HEADING */}
           <h1 className="text-[#262628] font-bold text-2xl sm:text-[32px] leading-tight">
             Complete your profile

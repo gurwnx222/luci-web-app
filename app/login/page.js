@@ -79,12 +79,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-[#FDE5E0]">
+    <div className="min-h-screen w-full bg-[#FDE5E0]">
       {/* MAIN SECTION */}
-      <section className="flex flex-col lg:flex-row w-full min-h-screen">
+      <section className="flex flex-col-reverse lg:flex-row w-full min-h-screen">
         {/* LEFT SIDE */}
-        <div className="w-full lg:w-2/3 mt-4 lg:mt-29 bg-[#FEC9BE] rounded-3xl lg:rounded-tr-4xl lg:rounded-br-4xl lg:rounded-tl-none lg:rounded-bl-none flex flex-col justify-center px-6 sm:px-12 lg:px-45 py-12 lg:py-0 mx-4 lg:mx-0 my-4 lg:my-0 lg:h-150">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-tight text-[#262628]">
+        <div className="w-full lg:w-2/3 lg:mt-29 bg-[#FEC9BE] rounded-2xl sm:rounded-3xl lg:rounded-tr-4xl lg:rounded-br-4xl lg:rounded-tl-none lg:rounded-bl-none flex flex-col justify-center px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-45 py-8 sm:py-12 lg:py-0 mx-2 sm:mx-4 lg:mx-0 my-2 sm:my-4 lg:my-0 lg:h-150">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 lg:mb-6 leading-tight text-[#262628]">
             Login to your account
             <div className="font-bold text-[#5F5F60] mt-2.5 text-base sm:text-lg leading-tight">
               Don&apos;t have an account?{" "}
@@ -94,7 +94,7 @@ export default function LoginPage() {
             </div>
           </h1>
 
-          <div className="w-full max-w-sm space-y-4 mt-6 lg:mt-10">
+          <div className="w-full max-w-xs sm:max-w-sm space-y-4 mt-6 lg:mt-10 mx-auto">
             <form onSubmit={handleNext} className="relative">
               <label
                 htmlFor="email"
@@ -155,7 +155,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-[80%] bg-[#D96073] cursor-pointer flex justify-center items-center mt-6 sm:mt-4 text-[#FFF6EF] mx-auto font-black text-base sm:text-lg py-3 sm:py-4 rounded-xl shadow-[0px_4px_20px_-4px_#BA7F88D9] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C85563] transition-colors min-h-[48px] touch-manipulation"
+                className="w-full bg-[#D96073] cursor-pointer flex justify-center items-center mt-6 sm:mt-4 text-[#FFF6EF] mx-auto font-black text-base sm:text-lg py-3 sm:py-4 rounded-xl shadow-[0px_4px_20px_-4px_#BA7F88D9] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#C85563] transition-colors min-h-[48px] touch-manipulation"
               >
                 {loading ? "Logging in..." : "Login to my account"}
               </button>
@@ -169,7 +169,7 @@ export default function LoginPage() {
               type="button"
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="flex bg-[#EDCFC9] w-full p-4 sm:p-5 rounded-2xl border border-[#E7C9C3] justify-center items-center gap-3 sm:gap-4 text-sm sm:text-base font-normal leading-tight text-[#5F5F60] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#E5C5BF] transition-colors min-h-[56px] touch-manipulation"
+              className="flex bg-[#EDCFC9] w-full p-4 sm:p-5 rounded-2xl border border-[#E7C9C3] justify-center items-center gap-3 sm:gap-4 text-sm sm:text-base font-normal leading-tight text-[#5F5F60] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#E5C5BF] transition-colors min-h-[48px] touch-manipulation"
             >
               <svg
                 width="18"
@@ -201,16 +201,16 @@ export default function LoginPage() {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="flex justify-center items-center w-full lg:w-[45.5%] py-8 lg:py-0 lg:pl-20 xl:pl-40 lg:m-10">
+        <div className="flex justify-center items-center w-full lg:w-[45.5%] py-6 sm:py-8 lg:py-0 lg:pl-20 xl:pl-40 lg:m-10">
           <div className="relative flex gap-2 items-center">
             <Image
               src="/logo.png"
-              width={70}
-              height={55}
+              width={56}
+              height={44}
               alt="logo"
-              className="w-14 h-11 sm:w-[70px] sm:h-[55px]"
+              className="w-12 h-10 sm:w-14 sm:h-11 md:w-[70px] md:h-[55px]"
             />
-            <div className="font-bold text-3xl sm:text-[36px] text-[#262628]">
+            <div className="font-bold text-2xl sm:text-3xl md:text-[36px] text-[#262628]">
               Luci
             </div>
           </div>

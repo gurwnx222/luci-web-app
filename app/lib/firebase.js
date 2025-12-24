@@ -3,13 +3,13 @@ import { initializeApp, getApps } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDolnaQsB7FbtbxQ1hNOykamRue9oLmsKI",
-  authDomain: "luci-auth-392ea.firebaseapp.com",
-  projectId: "luci-auth-392ea",
-  storageBucket: "luci-auth-392ea.firebasestorage.app",
-  messagingSenderId: "166265838080",
-  appId: "1:166265838080:web:e2945f2a12c1374b2fd6e5",
-  measurementId: "G-F74KCRWFQ0",
+  apiKey: "AIzaSyCBhJojzDnr_iHoAhPasiz_GKRqFQuXQ3Q",
+  authDomain: "luci-web-app.firebaseapp.com",
+  projectId: "luci-web-app",
+  storageBucket: "luci-web-app.firebasestorage.app",
+  messagingSenderId: "120828461908",
+  appId: "1:120828461908:web:1bcbeddca292fdc8cf7ec1",
+  measurementId: "G-GW8GQHPEBF",
 };
 
 // Initialize Firebase only if it hasn't been initialized

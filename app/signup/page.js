@@ -73,10 +73,10 @@ export default function SignupStep1() {
         </div>
       </nav>
 
-      {/* MAIN SECTION */}
-      <section className="flex flex-col lg:flex-row w-full min-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-88px)] px-4 sm:px-6 lg:px-0">
-        {/* LEFT SIDE - FORM */}
-        <div className="w-full lg:w-2/3 mt-4 lg:mt-29 bg-[#FEC9BE] rounded-2xl sm:rounded-3xl lg:rounded-tr-4xl lg:rounded-br-4xl lg:rounded-tl-none lg:rounded-bl-none flex flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 md:px-12 lg:px-16 xl:px-24 2xl:px-45">
+      {/* MAIN SECTION - CENTERED */}
+      <section className="flex justify-center items-center w-full min-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-88px)] px-4 sm:px-6 lg:px-8 py-8">
+        {/* FORM CONTAINER - CENTERED WITH MAX WIDTH */}
+        <div className="w-full max-w-2xl lg:max-w-3xl xl:max-w-4xl bg-[#FEC9BE] rounded-2xl sm:rounded-3xl flex flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 md:px-12 lg:px-16 xl:px-20">
           <div className="max-w-2xl mx-auto w-full">
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 lg:mb-6 leading-tight text-[#262628]">
               Create your business account
@@ -195,41 +195,6 @@ export default function SignupStep1() {
                 </svg>
                 <span>continue with google</span>
               </button>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT SIDE - STEPS */}
-        <div className="flex flex-col lg:flex-row lg:pl-12 xl:pl-20 2xl:pl-40 mt-6 sm:mt-8 lg:mt-10 items-center justify-center lg:justify-start lg:items-center w-full lg:w-[45.5%] pb-8 sm:pb-10 lg:pb-0">
-          <div className="flex flex-row lg:flex-col gap-6 sm:gap-8 md:gap-10 lg:gap-10 items-center lg:items-start">
-            {/* Step 01 */}
-            <div className="flex flex-col items-center lg:items-start gap-1.5 sm:gap-2">
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#D96073]">
-                01
-              </div>
-              <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-[#5F5F60] whitespace-nowrap text-center lg:text-left">
-                Create account
-              </div>
-            </div>
-
-            {/* Step 02 */}
-            <div className="flex flex-col items-center lg:items-start gap-1.5 sm:gap-2">
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#5F5F60]">
-                02
-              </div>
-              <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-[#5F5F60] whitespace-nowrap text-center lg:text-left">
-                Complete profile
-              </div>
-            </div>
-
-            {/* Step 03 */}
-            <div className="flex flex-col items-center lg:items-start gap-1.5 sm:gap-2">
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#5F5F60]">
-                03
-              </div>
-              <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-[#5F5F60] whitespace-nowrap text-center lg:text-left">
-                Thank you
-              </div>
             </div>
           </div>
         </div>

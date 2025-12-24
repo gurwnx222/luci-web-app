@@ -4,23 +4,31 @@ import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
-  
+
   // Determine current step based on pathname
   const getCurrentStep = () => {
-    if (pathname?.includes('/step2')) return 2;
-    if (pathname?.includes('/step3')) return 3;
-    if (pathname?.includes('/success')) return 3;
+    if (pathname?.includes("/step2")) return 2;
+    if (pathname?.includes("/step3")) return 3;
+    if (pathname?.includes("/success")) return 3;
     return 1;
   };
 
   const currentStep = getCurrentStep();
 
   return (
-    <div className="flex flex-col lg:flex-row w-full lg:min-h-screen">
+    <div className="flex flex-col lg:flex-row w-full">
       {/* Logo - Top on mobile, Top-left on desktop */}
       <nav className="flex items-center gap-2 pt-4 sm:pt-6 lg:pt-8 justify-center lg:justify-start px-4 sm:px-8 lg:px-12 w-full lg:w-auto lg:absolute lg:top-0 lg:left-0">
-        <Image src="/logo.png" width={55} height={55} alt="logo" className="w-10 h-10 sm:w-12 sm:h-12 md:w-[55px] md:h-[55px]" />
-        <h1 className="text-2xl sm:text-3xl md:text-[36px] font-bold text-[#262628]">Luci</h1>
+        <Image
+          src="/logo.png"
+          width={55}
+          height={55}
+          alt="logo"
+          className="w-10 h-10 sm:w-12 sm:h-12 md:w-[55px] md:h-[55px]"
+        />
+        <h1 className="text-2xl sm:text-3xl md:text-[36px] font-bold text-[#262628]">
+          Luci
+        </h1>
       </nav>
 
       {/* Progress Bar - Horizontal on mobile (top), Vertical on desktop (right side) */}
@@ -43,7 +51,11 @@ export default function Navbar() {
               />
             </svg>
           </div>
-          <div className={`w-12 sm:w-16 h-0.5 sm:h-1 flex-shrink-0 ${currentStep >= 2 ? 'bg-[#D96073]' : 'bg-[#A1AEBE]'}`}></div>
+          <div
+            className={`w-12 sm:w-16 h-0.5 sm:h-1 flex-shrink-0 ${
+              currentStep >= 2 ? "bg-[#D96073]" : "bg-[#A1AEBE]"
+            }`}
+          ></div>
           <div className="flex-shrink-0">
             <svg
               width="28"
@@ -74,7 +86,11 @@ export default function Navbar() {
               )}
             </svg>
           </div>
-          <div className={`w-12 sm:w-16 h-0.5 sm:h-1 flex-shrink-0 ${currentStep >= 3 ? 'bg-[#D96073]' : 'bg-[#A1AEBE]'}`}></div>
+          <div
+            className={`w-12 sm:w-16 h-0.5 sm:h-1 flex-shrink-0 ${
+              currentStep >= 3 ? "bg-[#D96073]" : "bg-[#A1AEBE]"
+            }`}
+          ></div>
           <div className="flex-shrink-0">
             <svg
               width="28"
@@ -107,9 +123,33 @@ export default function Navbar() {
           </div>
         </div>
         <div className="flex gap-4 sm:gap-6 justify-center text-xs sm:text-sm overflow-x-auto pb-2">
-          <div className={`whitespace-nowrap ${currentStep >= 1 ? 'text-[#D96073] font-semibold' : 'text-[#465668]'}`}>Signup</div>
-          <div className={`whitespace-nowrap ${currentStep >= 2 ? 'text-[#D96073] font-semibold' : 'text-[#465668]'}`}>Complete profile</div>
-          <div className={`whitespace-nowrap ${currentStep >= 3 ? 'text-[#D96073] font-semibold' : 'text-[#465668]'}`}>Thank you</div>
+          <div
+            className={`whitespace-nowrap ${
+              currentStep >= 1
+                ? "text-[#D96073] font-semibold"
+                : "text-[#465668]"
+            }`}
+          >
+            Signup
+          </div>
+          <div
+            className={`whitespace-nowrap ${
+              currentStep >= 2
+                ? "text-[#D96073] font-semibold"
+                : "text-[#465668]"
+            }`}
+          >
+            Complete profile
+          </div>
+          <div
+            className={`whitespace-nowrap ${
+              currentStep >= 3
+                ? "text-[#D96073] font-semibold"
+                : "text-[#465668]"
+            }`}
+          >
+            Thank you
+          </div>
         </div>
       </div>
 
@@ -117,46 +157,134 @@ export default function Navbar() {
       <div className="hidden lg:flex lg:fixed lg:right-8 lg:top-1/2 lg:-translate-y-1/2 flex-col items-center gap-4 z-10">
         <div className="flex flex-col items-center gap-2">
           <div className="text-[#D96073]">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="16" r="15" fill="#D96073" stroke="#D96073" strokeWidth="2"/>
-              <path d="M12.5778 19.642L22.2198 10L23.5 11.2802L12.5778 22.2025L7.49951 17.1257L8.77976 15.8455L12.5778 19.642Z" fill="white"/>
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="16"
+                cy="16"
+                r="15"
+                fill="#D96073"
+                stroke="#D96073"
+                strokeWidth="2"
+              />
+              <path
+                d="M12.5778 19.642L22.2198 10L23.5 11.2802L12.5778 22.2025L7.49951 17.1257L8.77976 15.8455L12.5778 19.642Z"
+                fill="white"
+              />
             </svg>
           </div>
-          <div className="text-sm font-semibold text-[#D96073] whitespace-nowrap">Signup</div>
+          <div className="text-sm font-semibold text-[#D96073] whitespace-nowrap">
+            Signup
+          </div>
         </div>
-        
-        <div className={`w-1 h-12 ${currentStep >= 2 ? 'bg-[#D96073]' : 'bg-[#A1AEBE]'}`}></div>
-        
+
+        <div
+          className={`w-1 h-12 ${
+            currentStep >= 2 ? "bg-[#D96073]" : "bg-[#A1AEBE]"
+          }`}
+        ></div>
+
         <div className="flex flex-col items-center gap-2">
           <div>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="16" r="15" fill={currentStep >= 2 ? "#D96073" : "white"} stroke="#D96073" strokeWidth="2"/>
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="16"
+                cy="16"
+                r="15"
+                fill={currentStep >= 2 ? "#D96073" : "white"}
+                stroke="#D96073"
+                strokeWidth="2"
+              />
               {currentStep >= 2 && (
-                <path d="M12.5778 19.642L22.2198 10L23.5 11.2802L12.5778 22.2025L7.49951 17.1257L8.77976 15.8455L12.5778 19.642Z" fill="white"/>
+                <path
+                  d="M12.5778 19.642L22.2198 10L23.5 11.2802L12.5778 22.2025L7.49951 17.1257L8.77976 15.8455L12.5778 19.642Z"
+                  fill="white"
+                />
               )}
               {currentStep < 2 && (
-                <text x="16" y="21" fontSize="14" fill="#D96073" textAnchor="middle" fontWeight="bold">2</text>
+                <text
+                  x="16"
+                  y="21"
+                  fontSize="14"
+                  fill="#D96073"
+                  textAnchor="middle"
+                  fontWeight="bold"
+                >
+                  2
+                </text>
               )}
             </svg>
           </div>
-          <div className={`text-sm font-semibold whitespace-nowrap ${currentStep >= 2 ? 'text-[#D96073]' : 'text-[#465668]'}`}>Complete profile</div>
+          <div
+            className={`text-sm font-semibold whitespace-nowrap ${
+              currentStep >= 2 ? "text-[#D96073]" : "text-[#465668]"
+            }`}
+          >
+            Complete profile
+          </div>
         </div>
-        
-        <div className={`w-1 h-12 ${currentStep >= 3 ? 'bg-[#D96073]' : 'bg-[#A1AEBE]'}`}></div>
-        
+
+        <div
+          className={`w-1 h-12 ${
+            currentStep >= 3 ? "bg-[#D96073]" : "bg-[#A1AEBE]"
+          }`}
+        ></div>
+
         <div className="flex flex-col items-center gap-2">
           <div>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="16" r="15" fill={currentStep >= 3 ? "#D96073" : "white"} stroke={currentStep >= 3 ? "#D96073" : "#A1AEBE"} strokeWidth="2"/>
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="16"
+                cy="16"
+                r="15"
+                fill={currentStep >= 3 ? "#D96073" : "white"}
+                stroke={currentStep >= 3 ? "#D96073" : "#A1AEBE"}
+                strokeWidth="2"
+              />
               {currentStep >= 3 && (
-                <path d="M12.5778 19.642L22.2198 10L23.5 11.2802L12.5778 22.2025L7.49951 17.1257L8.77976 15.8455L12.5778 19.642Z" fill="white"/>
+                <path
+                  d="M12.5778 19.642L22.2198 10L23.5 11.2802L12.5778 22.2025L7.49951 17.1257L8.77976 15.8455L12.5778 19.642Z"
+                  fill="white"
+                />
               )}
               {currentStep < 3 && (
-                <text x="16" y="21" fontSize="14" fill={currentStep >= 3 ? "#D96073" : "#A1AEBE"} textAnchor="middle" fontWeight="bold">3</text>
+                <text
+                  x="16"
+                  y="21"
+                  fontSize="14"
+                  fill={currentStep >= 3 ? "#D96073" : "#A1AEBE"}
+                  textAnchor="middle"
+                  fontWeight="bold"
+                >
+                  3
+                </text>
               )}
             </svg>
           </div>
-          <div className={`text-sm font-semibold whitespace-nowrap ${currentStep >= 3 ? 'text-[#D96073]' : 'text-[#465668]'}`}>Thank you</div>
+          <div
+            className={`text-sm font-semibold whitespace-nowrap ${
+              currentStep >= 3 ? "text-[#D96073]" : "text-[#465668]"
+            }`}
+          >
+            Thank you
+          </div>
         </div>
       </div>
     </div>

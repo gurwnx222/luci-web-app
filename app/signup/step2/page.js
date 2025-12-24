@@ -29,12 +29,12 @@ export default function SignupStep2() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDE5E0] pb-8 lg:pb-0">
+    <div className="bg-[#FDE5E0] min-h-screen">
       <Navbar />
 
       {/* MAIN BOX */}
-      <section className="flex items-center justify-center mt-4 sm:mt-8 px-4 lg:pr-32">
-        <div className="w-full max-w-[700px] min-h-[530px] bg-[#FEC9BE] rounded-3xl lg:rounded-4xl px-6 sm:px-12 lg:px-40 py-6 sm:py-8 flex flex-col items-start">
+      <section className="flex justify-center px-4 sm:mt-8 lg:pr-32 lg:mt-30">
+        <div className="w-full max-w-[700px] bg-[#FEC9BE] rounded-3xl lg:rounded-4xl px-6 sm:px-12 lg:px-40 py-6 sm:py-8 flex flex-col">
           {/* HEADING */}
           <h1 className="text-[#262628] font-bold text-2xl sm:text-[32px] leading-tight">
             Complete your profile
@@ -63,9 +63,9 @@ export default function SignupStep2() {
               </label>
               <input
                 type="text"
+                required
                 className="w-full p-3 sm:p-4 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none min-h-[48px]"
                 value={form.salonName}
-                required
                 onChange={(e) =>
                   setForm({ ...form, salonName: e.target.value })
                 }
@@ -76,9 +76,9 @@ export default function SignupStep2() {
               </label>
               <input
                 type="text"
+                required
                 className="w-full p-3 sm:p-4 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none min-h-[48px]"
                 value={form.location}
-                required
                 onChange={(e) => setForm({ ...form, location: e.target.value })}
               />
 

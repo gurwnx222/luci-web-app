@@ -1,6 +1,6 @@
 // app/signup/components/ImageUpload.js
 "use client";
-
+import Image from "next/image";
 export default function ImageUpload({
   id,
   label,
@@ -44,9 +44,9 @@ export default function ImageUpload({
       {image ? (
         <div className="flex items-center gap-3 p-3 sm:p-4 bg-[#EDCFC9] rounded-lg">
           <div
-            className={`relative w-16 h-16 sm:w-20 sm:h-20 ${shapeClass} overflow-hidden flex-shrink-0 border-2 border-[#D96073]`}
+            className={`relative w-16 h-16 sm:w-20 sm:h-20 ${shapeClass} overflow-hidden shrink-0 border-2 border-[#D96073]`}
           >
-            <img
+            <Image
               src={image}
               alt="Upload preview"
               className="w-full h-full object-cover"
@@ -63,7 +63,7 @@ export default function ImageUpload({
           <button
             type="button"
             onClick={onImageRemove}
-            className="text-sm text-[#D96073] font-semibold hover:underline flex-shrink-0 touch-manipulation px-2"
+            className="text-sm text-[#D96073] font-semibold hover:underline shrink-0 touch-manipulation px-2"
           >
             Remove
           </button>

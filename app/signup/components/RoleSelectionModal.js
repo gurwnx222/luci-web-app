@@ -22,7 +22,7 @@ export default function RoleSelectionModal({ isOpen, onClose, onSelectRole }) {
             height="20"
             viewBox="0 0 20 20"
             fill="none"
-            className="flex-shrink-0"
+            className="shrink-0"
           >
             <path
               d="M12.5 15L7.5 10L12.5 5"
@@ -52,12 +52,12 @@ export default function RoleSelectionModal({ isOpen, onClose, onSelectRole }) {
             <button
               key={role.id}
               onClick={() => onSelectRole(role.id)}
-              className="w-full flex items-center justify-between p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-[#EDCFC9] border-2 border-[#E7C9C3] hover:border-[#D96073] hover:bg-[#E5C5BF] transition-all group min-h-[56px] sm:min-h-[64px] touch-manipulation"
+              className="w-full flex items-center justify-between p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-[#EDCFC9] border-2 border-[#E7C9C3] hover:border-[#D96073] hover:bg-[#E5C5BF] transition-all group min-h-14 sm:min-h-16 touch-manipulation"
             >
               <span className="text-[#5F5F60] font-medium text-base sm:text-lg">
                 {role.label}
               </span>
-              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-[#D96073] flex items-center justify-center group-hover:bg-[#D96073] transition-colors flex-shrink-0">
+              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-[#D96073] flex items-center justify-center group-hover:bg-[#D96073] transition-colors shrink-0">
                 <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-transparent group-hover:bg-white transition-colors" />
               </div>
             </button>
@@ -67,7 +67,7 @@ export default function RoleSelectionModal({ isOpen, onClose, onSelectRole }) {
         {/* Next Button (disabled state) */}
         <button
           disabled
-          className="w-full sm:w-2/3 mx-auto block bg-[#D96073]/50 text-[#FFF6EF] font-bold text-lg sm:text-xl py-3 sm:py-4 rounded-2xl sm:rounded-3xl cursor-not-allowed min-h-[48px] touch-manipulation"
+          className="w-full sm:w-2/3 mx-auto block bg-[#D96073]/50 text-[#FFF6EF] font-bold text-lg sm:text-xl py-3 sm:py-4 rounded-2xl sm:rounded-3xl cursor-not-allowed min-h-12 touch-manipulation"
         >
           Next
         </button>

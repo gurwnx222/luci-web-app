@@ -29,9 +29,9 @@ export default function SignupSuccess() {
     <div className="min-h-screen bg-[#FDE5E0] flex flex-col">
       <Navbar />
 
-      <div className="flex-1 flex items-center justify-center px-4">
-        <div className="bg-[#FEC9BE] rounded-3xl lg:rounded-4xl p-8 sm:p-12 lg:p-16 text-center max-w-2xl w-full mx-4">
-          <div className="mb-6 sm:mb-8">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6">
+        <div className="bg-[#FEC9BE] rounded-3xl lg:rounded-4xl p-6 sm:p-10 lg:p-16 text-center max-w-2xl w-full">
+          <div className="mb-4 sm:mb-6">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#D96073] rounded-full flex items-center justify-center mx-auto">
               <svg
                 className="w-8 h-8 sm:w-10 sm:h-10 text-white"
@@ -49,15 +49,15 @@ export default function SignupSuccess() {
             </div>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#262628] mb-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#262628] mb-3 sm:mb-4 break-words px-2">
             Welcome, {userName}!
           </h1>
 
-          <p className="text-lg sm:text-xl lg:text-2xl text-[#5F5F60] font-semibold mb-2">
+          <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-[#5F5F60] font-semibold mb-2">
             Your profile is complete
           </p>
 
-          <p className="text-sm sm:text-base text-[#5F5F60] mb-8">
+          <p className="text-sm sm:text-base text-[#5F5F60] mb-6 sm:mb-8">
             Redirecting you to your dashboard...
           </p>
 

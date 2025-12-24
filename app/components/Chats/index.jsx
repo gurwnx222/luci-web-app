@@ -1,135 +1,367 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-
-
-
-const STORAGE_KEY = "chat_messages";
+import { chatApi } from "@/app/lib/chatApi";
+import { getSocket, connectUser, disconnectSocket } from "@/app/lib/socket";
 
 export default function ChatPage() {
-    const fileInputRef = useRef(null);
-  const users = [
-    { id: 1, name: "Samuel Johnson", image: "/images/person1.png" },
-    { id: 2, name: "Alex Brown", image: "/images/person1.png" },
-    { id: 3, name: "Emma Watson", image: "/images/person1.png" },
-  ];
+  const fileInputRef = useRef(null);
+  const bottomRef = useRef(null);
+  const socketRef = useRef(null);
 
-  const [mounted, setMounted] = useState(false);
-  const [activeUser, setActiveUser] = useState(users[0]);
+  // Current user (salon owner) - in production, get from auth context
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  
+  // Users and conversations
+  const [users, setUsers] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [activeConversation, setActiveConversation] = useState(null);
+  const [activeUser, setActiveUser] = useState(null);
+  
+  // Messages
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Preview URL
-    const imageUrl = URL.createObjectURL(file);
-
-    // Add image as a message
-    setMessages((prev) => ({
-      ...prev,
-      [activeUser.id]: [
-        ...prev[activeUser.id],
-        {
-          id: Date.now(),
-          type: "image",
-          image: imageUrl,
-          sender: "me",
-          time: "Now",
-        },
-      ],
-    }));
-  };
-
-  const [messages, setMessages] = useState({
-    1: [
-      {
-        id: 1,
-        text: "What time you want to book your massage?",
-        sender: "me",
-        time: "8:30 am",
-      },
-      {
-        id: 2,
-        text: "Let’s go for 3:30 pm",
-        sender: "other",
-        time: "8:35 am",
-      },
-    ],
-    2: [],
-    3: [],
-  });
-
+  // Initialize current user (salon owner)
   useEffect(() => {
-    setMounted(true);
+    const initializeUser = async () => {
+      try {
+        // Check if user exists in localStorage
+        let userId = localStorage.getItem('chat_user_id');
+        let user = null;
+
+        if (userId) {
+          try {
+            user = await chatApi.getUser(userId);
+          } catch (error) {
+            // User doesn't exist, create new one
+            userId = null;
+          }
+        }
+
+        // If no user, create a default salon owner user
+        if (!user) {
+          const newUser = await chatApi.registerUser({
+            name: "Salon Owner",
+            email: `salon-owner-${Date.now()}@example.com`,
+            phone: "+1234567890",
+            avatar: "",
+          });
+          user = newUser.user;
+          userId = user._id;
+          localStorage.setItem('chat_user_id', userId);
+        }
+
+        setCurrentUserId(userId);
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Error initializing user:", error);
+        setLoading(false);
+      }
+    };
+
+    initializeUser();
   }, []);
 
-  /* ---------- LOAD FROM LOCAL STORAGE ---------- */
+  // Connect to Socket.IO when user is ready
   useEffect(() => {
-    if (!mounted) return;
+    if (!currentUserId) return;
 
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setMessages(JSON.parse(saved));
-    }
-  }, [mounted]);
-  //   save to local strorage
+    const socket = getSocket(currentUserId);
+    socketRef.current = socket;
+
+    // Connect user
+    connectUser(currentUserId);
+
+    // Listen for new messages
+    socket.on('receive_message', (data) => {
+      const { message } = data;
+      if (message.conversationId === activeConversation?._id) {
+        setMessages((prev) => [...prev, message]);
+      }
+    });
+
+    // Listen for message sent confirmation
+    socket.on('message_sent', (data) => {
+      const { message } = data;
+      setMessages((prev) => {
+        const filtered = prev.filter((m) => m.tempId !== message.tempId);
+        return [...filtered, message];
+      });
+      setSending(false);
+    });
+
+    // Listen for message status updates
+    socket.on('message_status_update', (data) => {
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg._id === data.messageId
+            ? { ...msg, isDelivered: data.isDelivered, isRead: data.isRead }
+            : msg
+        )
+      );
+    });
+
+    // Listen for user status updates
+    socket.on('user_status', (data) => {
+      setUsers((prev) =>
+        prev.map((user) =>
+          user._id === data.userId
+            ? { ...user, isOnline: data.isOnline }
+            : user
+        )
+      );
+    });
+
+    // Listen for typing indicators
+    socket.on('user_typing', (data) => {
+      // Handle typing indicator if needed
+    });
+
+    return () => {
+      socket.off('receive_message');
+      socket.off('message_sent');
+      socket.off('message_status_update');
+      socket.off('user_status');
+      socket.off('user_typing');
+    };
+  }, [currentUserId, activeConversation]);
+
+  // Load users and conversations
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-  }, [messages]);
+    if (!currentUserId) return;
 
-  // Auto scroll code
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [allUsers, userConversations] = await Promise.all([
+          chatApi.getAllUsers(),
+          chatApi.getConversations(currentUserId),
+        ]);
 
-  const bottomRef = useRef(null);
+        // Filter out current user
+        const otherUsers = allUsers.filter((u) => u._id !== currentUserId);
+        setUsers(otherUsers);
+        setConversations(userConversations);
 
+        // Set first conversation as active if available
+        if (userConversations.length > 0) {
+          const firstConv = userConversations[0];
+          const otherParticipant = firstConv.participants.find(
+            (p) => p._id !== currentUserId
+          );
+          setActiveConversation(firstConv);
+          setActiveUser(otherParticipant);
+        } else if (otherUsers.length > 0) {
+          // If no conversations, set first user as active
+          setActiveUser(otherUsers[0]);
+        }
+      } catch (error) {
+        console.error("Error loading data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [currentUserId]);
+
+  // Load messages when conversation changes
+  useEffect(() => {
+    if (!activeConversation?._id) return;
+
+    const loadMessages = async () => {
+      try {
+        const conversationMessages = await chatApi.getMessages(activeConversation._id);
+        setMessages(conversationMessages);
+        
+        // Mark messages as read
+        if (currentUserId) {
+          await chatApi.markMessagesAsRead(activeConversation._id, currentUserId);
+        }
+      } catch (error) {
+        console.error("Error loading messages:", error);
+      }
+    };
+
+    loadMessages();
+  }, [activeConversation, currentUserId]);
+
+  // Auto scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, activeUser]);
+  }, [messages]);
 
-  //   send messages
-  const sendMessage = () => {
-    if (!input.trim()) return;
-
-    setMessages((prev) => ({
-      ...prev,
-      [activeUser.id]: [
-        ...prev[activeUser.id],
-        {
-          id: Date.now(),
-          text: input,
-          sender: "me",
-          time: "Now",
-        },
-      ],
-    }));
-
-    setInput("");
+  // Handle user selection
+  const handleUserSelect = async (user) => {
+    setActiveUser(user);
+    
+    // Find or create conversation
+    try {
+      const conversation = await chatApi.createOrGetConversation(
+        currentUserId,
+        user._id
+      );
+      setActiveConversation(conversation);
+    } catch (error) {
+      console.error("Error creating/getting conversation:", error);
+    }
   };
+
+  // Send message
+  const sendMessage = async () => {
+    if (!input.trim() || !activeConversation || !activeUser || sending) return;
+
+    const tempId = `temp-${Date.now()}`;
+    const tempMessage = {
+      _id: tempId,
+      tempId,
+      text: input,
+      sender: currentUser,
+      conversationId: activeConversation._id,
+      messageType: 'text',
+      createdAt: new Date(),
+      isDelivered: false,
+      isRead: false,
+    };
+
+    // Optimistically add message
+    setMessages((prev) => [...prev, tempMessage]);
+    setSending(true);
+    const messageText = input;
+    setInput("");
+
+    try {
+      if (socketRef.current && socketRef.current.connected) {
+        socketRef.current.emit('send_message', {
+          conversationId: activeConversation._id,
+          senderId: currentUserId,
+          receiverId: activeUser._id,
+          text: messageText,
+          messageType: 'text',
+          tempId,
+        });
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setSending(false);
+      // Remove temp message on error
+      setMessages((prev) => prev.filter((m) => m.tempId !== tempId));
+    }
+  };
+
+  // Handle image upload
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file || !activeConversation || !activeUser) return;
+
+    try {
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64 = reader.result.split(',')[1];
+        
+        try {
+          const uploadResult = await chatApi.uploadImage(base64, file.name);
+          
+          if (socketRef.current && socketRef.current.connected) {
+            const tempId = `temp-img-${Date.now()}`;
+            const tempMessage = {
+              _id: tempId,
+              tempId,
+              imageUrl: uploadResult.url,
+              sender: currentUser,
+              conversationId: activeConversation._id,
+              messageType: 'image',
+              createdAt: new Date(),
+              isDelivered: false,
+              isRead: false,
+            };
+
+            setMessages((prev) => [...prev, tempMessage]);
+            setSending(true);
+
+            socketRef.current.emit('send_message', {
+              conversationId: activeConversation._id,
+              senderId: currentUserId,
+              receiverId: activeUser._id,
+              messageType: 'image',
+              imageUrl: uploadResult.url,
+              tempId,
+            });
+          }
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error("Error reading file:", error);
+    }
+  };
+
+  // Format time
+  const formatTime = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now - date;
+    const minutes = Math.floor(diff / 60000);
+
+    if (minutes < 1) return "Now";
+    if (minutes < 60) return `${minutes}m ago`;
+    if (date.toDateString() === now.toDateString()) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    return date.toLocaleDateString();
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      disconnectSocket();
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="h-full flex items-center justify-center bg-[#262628] rounded-4xl">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col bg-[#262628] rounded-4xl overflow-hidden">
-      {/* 🔹 TOP PROFILE BAR (DIFFERENT BG) */}
+      {/* 🔹 TOP PROFILE BAR */}
       <div className="bg-[#EED4CF] rounded-t-3xl px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div className="flex gap-3 sm:gap-4 md:gap-6 overflow-x-auto no-scrollbar pb-2 sm:pb-0">
           {users.map((user) => (
             <div
-              key={user.id}
-              onClick={() => setActiveUser(user)}
-              className={`min-w-[80px] sm:min-w-[90px] cursor-pointer flex flex-col items-center gap-1.5 sm:gap-2 p-2 sm:p-3 rounded-2xl flex-shrink-0 ${
-                activeUser.id === user.id
+              key={user._id}
+              onClick={() => handleUserSelect(user)}
+              className={`min-w-[80px] sm:min-w-[90px] cursor-pointer flex flex-col items-center gap-1.5 sm:gap-2 p-2 sm:p-3 rounded-2xl flex-shrink-0 transition-colors ${
+                activeUser?._id === user._id
                   ? "bg-[#D96073] text-white"
                   : "bg-[#f3c9c1] text-gray-600"
               }`}
             >
               <div className="relative">
                 <Image
-                  src={user.image}
+                  src={user.avatar || "/images/person1.png"}
                   alt={user.name}
                   width={36}
                   height={36}
-                  className="rounded-full w-8 h-8 sm:w-9 sm:h-9"
+                  className="rounded-full w-8 h-8 sm:w-9 sm:h-9 object-cover"
                 />
-                <span className="absolute top-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                <span
+                  className={`absolute top-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border-2 border-white ${
+                    user.isOnline ? "bg-green-500" : "bg-gray-400"
+                  }`}
+                ></span>
               </div>
               <span className="text-[10px] sm:text-xs text-center leading-tight break-words max-w-full">
                 {user.name}
@@ -139,42 +371,48 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* 🔹 CHAT AREA (LIGHT PINK BG) */}
+      {/* 🔹 CHAT AREA */}
       <div className="flex-1 bg-[#EED4CF] mt-2 rounded-t-3xl overflow-y-auto px-4 sm:px-8 md:px-12 lg:px-16 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-10 chat-scroll">
-        <div className="text-center text-xs sm:text-sm text-gray-500">Today</div>
+        {messages.length > 0 && (
+          <div className="text-center text-xs sm:text-sm text-gray-500">
+            {new Date(messages[0]?.createdAt).toLocaleDateString()}
+          </div>
+        )}
 
-        {messages[activeUser.id]?.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex ${
-              msg.sender === "me" ? "justify-end" : "justify-start"
-            }`}
-          >
-            <div className="max-w-[85%] sm:max-w-[75%] md:max-w-[380px]">
-              <div
-                className={`px-4 sm:px-5 md:px-6 py-3 sm:py-4 rounded-2xl shadow text-sm sm:text-base ${
-                  msg.sender === "me"
-                    ? "bg-[#D96073] text-white rounded-br-none"
-                    : "bg-[#fff5f1] text-black rounded-bl-none"
-                }`}
-              >
-              {msg.type === "image" ? (
-                <img 
-                    src={msg.image}
-                    alt="uploaded"
-                    className="rounded-xl max-w-[150px] sm:max-w-[200px]"
-                />
-              ): (
-                msg.text
-              )}
-                
-              </div>
-              <div className="text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-2">
-                Seen · {msg.time}
+        {messages.map((msg) => {
+          const senderId = typeof msg.sender === 'object' ? msg.sender._id : msg.sender;
+          const isMe = senderId === currentUserId;
+          return (
+            <div
+              key={msg._id || msg.tempId}
+              className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+            >
+              <div className="max-w-[85%] sm:max-w-[75%] md:max-w-[380px]">
+                <div
+                  className={`px-4 sm:px-5 md:px-6 py-3 sm:py-4 rounded-2xl shadow text-sm sm:text-base ${
+                    isMe
+                      ? "bg-[#D96073] text-white rounded-br-none"
+                      : "bg-[#fff5f1] text-black rounded-bl-none"
+                  }`}
+                >
+                  {msg.messageType === "image" ? (
+                    <img
+                      src={msg.imageUrl}
+                      alt="uploaded"
+                      className="rounded-xl max-w-[150px] sm:max-w-[200px]"
+                    />
+                  ) : (
+                    msg.text
+                  )}
+                </div>
+                <div className="text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-2">
+                  {msg.isRead ? "Seen" : msg.isDelivered ? "Delivered" : "Sending"} ·{" "}
+                  {formatTime(msg.createdAt)}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         <div ref={bottomRef} />
       </div>
@@ -184,8 +422,9 @@ export default function ChatPage() {
         <div className="flex items-center gap-2 sm:gap-3 md:gap-4 bg-[#fff5f1] px-3 sm:px-4 md:px-6 py-3 sm:py-4 rounded-2xl">
           <button
             type="button"
-            onClick={() => fileInputRef.current.click()}
+            onClick={() => fileInputRef.current?.click()}
             className="cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity"
+            disabled={!activeUser || sending}
           >
             <svg
               width="20"
@@ -201,7 +440,6 @@ export default function ChatPage() {
               />
             </svg>
           </button>
-          {/* HIDDEN FILE INPUT */}
           <input
             ref={fileInputRef}
             type="file"
@@ -211,15 +449,17 @@ export default function ChatPage() {
           />
           <input
             type="text"
-            placeholder="Enter your message..."
+            placeholder={activeUser ? "Enter your message..." : "Select a user to chat"}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
             className="flex-1 text-[#262628] bg-transparent outline-none text-sm sm:text-base min-w-0"
+            disabled={!activeUser || sending}
           />
-          <button 
-            onClick={sendMessage} 
-            className="text-[#D96073] text-lg sm:text-xl flex-shrink-0 hover:opacity-80 transition-opacity"
+          <button
+            onClick={sendMessage}
+            disabled={!activeUser || !input.trim() || sending}
+            className="text-[#D96073] text-lg sm:text-xl flex-shrink-0 hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
             ➤
           </button>

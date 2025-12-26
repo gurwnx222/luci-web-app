@@ -45,7 +45,7 @@ export default function WorkInfoModal({ isOpen, onClose, onSubmit }) {
             height="20"
             viewBox="0 0 20 20"
             fill="none"
-            className="flex-shrink-0"
+            className="shrink-0"
           >
             <path
               d="M12.5 15L7.5 10L12.5 5"

@@ -15,13 +15,15 @@ export default function SignupStep2() {
     // Salon Owner
     salonName: "",
     country: "",
+    city: "",
     province: "",
     streetAddress: "",
     // Private Massager
     occupation: "",
+    gender: "",
     height: "",
     weight: "",
-    bio: "",
+    aboutMe: "",
   });
 
   useEffect(() => {
@@ -62,20 +64,25 @@ export default function SignupStep2() {
         ? {
             name: formData.name,
             salonName: formData.salonName,
-            country: formData.country,
-            province: formData.province,
-            streetAddress: formData.streetAddress,
+            location: {
+              country: formData.country,
+              city: formData.city,
+              province: formData.province,
+              streetAddress: formData.streetAddress,
+            },
           }
         : {
             name: formData.name,
             occupation: formData.occupation,
+            gender: formData.gender,
             height: formData.height,
             weight: formData.weight,
-            bio: formData.bio,
+            aboutMe: formData.aboutMe,
           }),
     };
 
     localStorage.setItem("profileStep2", JSON.stringify(profileData));
+
     router.push("/signup/step3");
   };
 
@@ -85,6 +92,7 @@ export default function SignupStep2() {
         formData.name.trim() &&
         formData.salonName.trim() &&
         formData.country.trim() &&
+        formData.city.trim() &&
         formData.province.trim() &&
         formData.streetAddress.trim()
       );
@@ -92,9 +100,10 @@ export default function SignupStep2() {
       return (
         formData.name.trim() &&
         formData.occupation.trim() &&
+        formData.gender.trim() &&
         formData.height.trim() &&
         formData.weight.trim() &&
-        formData.bio.trim()
+        formData.aboutMe.trim()
       );
     }
   };
@@ -242,6 +251,18 @@ export default function SignupStep2() {
                   </div>
                   <div>
                     <label className="text-[#5F5F60] font-semibold text-sm sm:text-base block mb-2">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.city}
+                      onChange={(e) => handleChange("city", e.target.value)}
+                      className="w-full p-3 sm:p-4 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none focus:ring-2 focus:ring-[#D96073]/30 transition-all min-h-[48px] text-[#262628]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[#5F5F60] font-semibold text-sm sm:text-base block mb-2">
                       Province
                     </label>
                     <input
@@ -320,6 +341,31 @@ export default function SignupStep2() {
                   />
                 </div>
 
+                <div>
+                  <label className="text-[#5F5F60] font-semibold text-sm sm:text-base block mb-2">
+                    Select your gender
+                  </label>
+                  <select
+                    required
+                    value={formData.gender}
+                    onChange={(e) => handleChange("gender", e.target.value)}
+                    className="w-full p-3 sm:p-4 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none focus:ring-2 focus:ring-[#D96073]/30 transition-all min-h-[48px] text-[#262628] appearance-none cursor-pointer"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23D96073' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 1rem center",
+                      backgroundSize: "12px",
+                    }}
+                  >
+                    <option value="" disabled>
+                      Choose an option
+                    </option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <label className="text-[#5F5F60] font-semibold text-sm sm:text-base block mb-2">
@@ -363,8 +409,8 @@ export default function SignupStep2() {
                   </label>
                   <textarea
                     required
-                    value={formData.bio}
-                    onChange={(e) => handleChange("bio", e.target.value)}
+                    value={formData.aboutMe}
+                    onChange={(e) => handleChange("aboutMe", e.target.value)}
                     rows={4}
                     className="w-full p-3 sm:p-4 text-base rounded-lg bg-[#EDCFC9] shadow-[0px_4px_12px_-1px_#26262833] focus:outline-none focus:ring-2 focus:ring-[#D96073]/30 transition-all resize-none text-[#262628]"
                   />

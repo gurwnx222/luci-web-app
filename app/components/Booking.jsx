@@ -2,27 +2,49 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
-import { getBookingSocket, connectBookingUser, disconnectBookingSocket } from "../lib/bookingSocket";
+import {
+  getBookingSocket,
+  connectBookingUser,
+  disconnectBookingSocket,
+} from "../lib/bookingSocket";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://192.168.18.47:3000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://192.168.18.47:3000";
 
 export default function BookingPage() {
   const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [salonOwnerId, setSalonOwnerId] = useState(null);
+  const [ownerId, setOwnerId] = useState(null);
+  const [userRole, setUserRole] = useState(null); // 'salon-owner' or 'private-massager'
   const socketRef = useRef(null);
 
-  // Check localStorage for salonOwnerId on mount and when it changes
+  // Check localStorage for owner ID (salon or massager) on mount and when it changes
   useEffect(() => {
     const checkLocalStorage = () => {
-      const storedId = localStorage.getItem("salonOwnerId");
-      if (storedId) {
-        console.log("✅ Found salon owner ID in localStorage:", storedId);
-        setSalonOwnerId(storedId);
+      // Check for salon owner ID first
+      const salonOwnerId =
+        localStorage.getItem("salonOwnerId") || localStorage.getItem("ownerId");
+      if (salonOwnerId) {
+        console.log("✅ Found salon owner ID in localStorage:", salonOwnerId);
+        setOwnerId(salonOwnerId);
+        setUserRole("salon-owner");
         return true;
       }
+
+      // Check for private massager ID
+      const massagerId = localStorage.getItem("massagerProfileId");
+      if (massagerId) {
+        console.log(
+          "✅ Found private massager ID in localStorage:",
+          massagerId
+        );
+        setOwnerId(massagerId);
+        setUserRole("private-massager");
+        return true;
+      }
+
       return false;
     };
 
@@ -33,9 +55,17 @@ export default function BookingPage() {
 
     // Listen for storage events (when localStorage changes in another tab/window)
     const handleStorageChange = (e) => {
-      if (e.key === "salonOwnerId" && e.newValue) {
+      if ((e.key === "salonOwnerId" || e.key === "ownerId") && e.newValue) {
         console.log("✅ Salon owner ID updated in localStorage:", e.newValue);
-        setSalonOwnerId(e.newValue);
+        setOwnerId(e.newValue);
+        setUserRole("salon-owner");
+      } else if (e.key === "massagerProfileId" && e.newValue) {
+        console.log(
+          "✅ Private massager ID updated in localStorage:",
+          e.newValue
+        );
+        setOwnerId(e.newValue);
+        setUserRole("private-massager");
       }
     };
 
@@ -43,10 +73,18 @@ export default function BookingPage() {
 
     // Also check periodically (for same-tab updates)
     const interval = setInterval(() => {
-      const storedId = localStorage.getItem("salonOwnerId");
-      if (storedId && storedId !== salonOwnerId) {
-        console.log("✅ Detected salon owner ID change:", storedId);
-        setSalonOwnerId(storedId);
+      const salonOwnerId =
+        localStorage.getItem("salonOwnerId") || localStorage.getItem("ownerId");
+      const massagerId = localStorage.getItem("massagerProfileId");
+
+      if (salonOwnerId && salonOwnerId !== ownerId) {
+        console.log("✅ Detected salon owner ID change:", salonOwnerId);
+        setOwnerId(salonOwnerId);
+        setUserRole("salon-owner");
+      } else if (massagerId && massagerId !== ownerId) {
+        console.log("✅ Detected private massager ID change:", massagerId);
+        setOwnerId(massagerId);
+        setUserRole("private-massager");
       }
     }, 1000);
 
@@ -54,39 +92,51 @@ export default function BookingPage() {
       window.removeEventListener("storage", handleStorageChange);
       clearInterval(interval);
     };
-  }, [salonOwnerId]);
+  }, [ownerId]);
 
-  // Fetch salon owner ID from backend based on user email (if logged in)
+  // Fetch owner ID from backend based on user email (if logged in)
   useEffect(() => {
-    const fetchSalonOwnerId = async () => {
+    const fetchOwnerId = async () => {
       // If we already have an ID from localStorage, skip
-      if (salonOwnerId) {
+      if (ownerId) {
         return;
       }
 
       if (!user || !user.email) {
-        console.log("⏳ Not logged in - using localStorage only. Set salonOwnerId in localStorage to continue.");
+        console.log(
+          "⏳ Not logged in - using localStorage only. Set salonOwnerId/ownerId or massagerProfileId in localStorage to continue."
+        );
         return;
       }
 
       try {
         // First check localStorage (for quick access)
-        const cachedOwnerId = localStorage.getItem("salonOwnerId");
-        if (cachedOwnerId) {
-          console.log("✅ Using cached salon owner ID:", cachedOwnerId);
-          setSalonOwnerId(cachedOwnerId);
+        const cachedSalonOwnerId =
+          localStorage.getItem("salonOwnerId") ||
+          localStorage.getItem("ownerId");
+        const cachedMassagerId = localStorage.getItem("massagerProfileId");
+
+        if (cachedSalonOwnerId) {
+          console.log("✅ Using cached salon owner ID:", cachedSalonOwnerId);
+          setOwnerId(cachedSalonOwnerId);
+          setUserRole("salon-owner");
           return;
         }
 
-        // Try to find salon owner by email - we'll need to check if there's an endpoint
-        // For now, let's try fetching all salons and finding the one that matches
-        console.log("🔍 Searching for salon owner with email:", user.email);
-        
-        // First, try to get salon by owner email (if such endpoint exists)
-        // Otherwise, we'll need to manually set it or use a different approach
-        let ownerId = null;
-        
-        // Try fetching salons and finding one that matches the email
+        if (cachedMassagerId) {
+          console.log("✅ Using cached massager ID:", cachedMassagerId);
+          setOwnerId(cachedMassagerId);
+          setUserRole("private-massager");
+          return;
+        }
+
+        // Try to find owner by email
+        console.log("🔍 Searching for owner with email:", user.email);
+
+        let foundOwnerId = null;
+        let foundRole = null;
+
+        // Try fetching salons first
         try {
           const salonsResponse = await fetch(
             `${API_BASE_URL}/api/v1/salons?limit=100`,
@@ -97,24 +147,32 @@ export default function BookingPage() {
               },
             }
           );
-          
+
           if (salonsResponse.ok) {
             const salonsData = await salonsResponse.json();
             if (salonsData.success && salonsData.data) {
-              // Find salon where owner email matches
               const matchingSalon = salonsData.data.find((salon) => {
-                const ownerEmail = salon.owner?.salonOwnerEmail || 
-                                 salon.ownerEmail || 
-                                 salon.salonOwnerEmail;
-                return ownerEmail && ownerEmail.toLowerCase() === user.email.toLowerCase();
+                const ownerEmail =
+                  salon.owner?.salonOwnerEmail ||
+                  salon.ownerEmail ||
+                  salon.salonOwnerEmail;
+                return (
+                  ownerEmail &&
+                  ownerEmail.toLowerCase() === user.email.toLowerCase()
+                );
               });
-              
+
               if (matchingSalon) {
-                ownerId = matchingSalon.ownerId || 
-                         matchingSalon.owner?._id || 
-                         matchingSalon.owner?._id?.toString();
-                if (ownerId) {
-                  console.log("✅ Found salon owner ID from salon list:", ownerId);
+                foundOwnerId =
+                  matchingSalon.ownerId ||
+                  matchingSalon.owner?._id ||
+                  matchingSalon.owner?._id?.toString();
+                if (foundOwnerId) {
+                  foundRole = "salon-owner";
+                  console.log(
+                    "✅ Found salon owner ID from salon list:",
+                    foundOwnerId
+                  );
                 }
               }
             }
@@ -122,42 +180,96 @@ export default function BookingPage() {
         } catch (salonErr) {
           console.warn("⚠️ Could not fetch salons:", salonErr);
         }
-        
-        if (!ownerId) {
-          console.warn("⚠️ Salon owner not found for email:", user.email);
-          console.warn("💡 Please register as a salon owner first or set salonOwnerId in localStorage");
-          setError("Salon owner profile not found. Please register as a salon owner first.");
+
+        // If not found as salon owner, try fetching private massagers
+        if (!foundOwnerId) {
+          try {
+            const massagersResponse = await fetch(
+              `${API_BASE_URL}/api/v1/massagers?limit=100`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (massagersResponse.ok) {
+              const massagersData = await massagersResponse.json();
+              if (massagersData.success && massagersData.data) {
+                const matchingMassager = massagersData.data.find((massager) => {
+                  const ownerEmail =
+                    massager.owner?.email ||
+                    massager.ownerEmail ||
+                    massager.email;
+                  return (
+                    ownerEmail &&
+                    ownerEmail.toLowerCase() === user.email.toLowerCase()
+                  );
+                });
+
+                if (matchingMassager) {
+                  foundOwnerId =
+                    matchingMassager.owner?.id ||
+                    matchingMassager.owner?._id ||
+                    matchingMassager._id;
+                  if (foundOwnerId) {
+                    foundRole = "private-massager";
+                    console.log("✅ Found private massager ID:", foundOwnerId);
+                  }
+                }
+              }
+            }
+          } catch (massagerErr) {
+            console.warn("⚠️ Could not fetch massagers:", massagerErr);
+          }
+        }
+
+        if (!foundOwnerId) {
+          console.warn("⚠️ Owner profile not found for email:", user.email);
+          console.warn(
+            "💡 Please register as a salon owner or private massager first, or set the ID in localStorage"
+          );
+          setError(
+            "Owner profile not found. Please complete your profile registration first."
+          );
           return;
         }
-        
-        console.log("✅ Found salon owner ID:", ownerId);
-        setSalonOwnerId(ownerId.toString());
-        localStorage.setItem("salonOwnerId", ownerId.toString());
+
+        console.log("✅ Found owner ID:", foundOwnerId, "Role:", foundRole);
+        setOwnerId(foundOwnerId.toString());
+        setUserRole(foundRole);
+
+        // Cache in localStorage
+        if (foundRole === "salon-owner") {
+          localStorage.setItem("salonOwnerId", foundOwnerId.toString());
+        } else {
+          localStorage.setItem("massagerProfileId", foundOwnerId.toString());
+        }
       } catch (err) {
-        console.error("❌ Error fetching salon owner ID:", err);
-        // Don't set error here - allow manual localStorage setup
+        console.error("❌ Error fetching owner ID:", err);
       }
     };
 
-    fetchSalonOwnerId();
-  }, [user, salonOwnerId]);
+    fetchOwnerId();
+  }, [user, ownerId]);
 
   // Setup SocketIO listeners for booking notifications
   useEffect(() => {
-    if (!salonOwnerId) return;
+    if (!ownerId) return;
 
-    const socket = getBookingSocket(salonOwnerId);
+    const socket = getBookingSocket(ownerId);
     socketRef.current = socket;
 
     // Connect user
-    connectBookingUser(salonOwnerId);
+    connectBookingUser(ownerId);
 
     // Listen for new booking requests
     socket.on("booking_notification", (data) => {
       console.log("📬 New booking notification:", data);
       // Refresh bookings list
       fetchBookings();
-      
+
       // Show browser notification
       if (Notification.permission === "granted") {
         new Notification("New Booking Request", {
@@ -192,11 +304,11 @@ export default function BookingPage() {
       socket.off("booking_status_update");
       disconnectBookingSocket();
     };
-  }, [salonOwnerId]);
+  }, [ownerId]);
 
   // Fetch bookings
   const fetchBookings = async () => {
-    if (!salonOwnerId) {
+    if (!ownerId) {
       setLoading(false);
       return;
     }
@@ -205,8 +317,11 @@ export default function BookingPage() {
       setLoading(true);
       setError(null);
 
+      // Use appropriate query parameter based on role
+      const queryParam =
+        userRole === "salon-owner" ? "salonOwnerId" : "massagerId";
       const response = await fetch(
-        `${API_BASE_URL}/api/v1/bookings/list?salonOwnerId=${salonOwnerId}`,
+        `${API_BASE_URL}/api/v1/bookings/list?${queryParam}=${ownerId}`,
         {
           method: "GET",
           headers: {
@@ -234,7 +349,9 @@ export default function BookingPage() {
       }
     } catch (err) {
       console.error("❌ Error fetching bookings:", err);
-      setError(err.message || "Failed to fetch bookings. Please check your connection.");
+      setError(
+        err.message || "Failed to fetch bookings. Please check your connection."
+      );
       setBookings([]);
     } finally {
       setLoading(false);
@@ -243,16 +360,22 @@ export default function BookingPage() {
 
   useEffect(() => {
     fetchBookings();
-  }, [salonOwnerId]);
+  }, [ownerId, userRole]);
 
   // Accept booking
   const handleAccept = async (bookingId) => {
-    if (!salonOwnerId) {
-      alert("Salon owner ID not found");
+    if (!ownerId) {
+      alert("Owner ID not found");
       return;
     }
 
     try {
+      // Send appropriate ID based on role
+      const requestBody =
+        userRole === "salon-owner"
+          ? { salonOwnerId: ownerId }
+          : { massagerId: ownerId };
+
       const response = await fetch(
         `${API_BASE_URL}/api/v1/bookings/${bookingId}/accept`,
         {
@@ -260,7 +383,7 @@ export default function BookingPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ salonOwnerId }),
+          body: JSON.stringify(requestBody),
         }
       );
 
@@ -270,21 +393,23 @@ export default function BookingPage() {
       }
 
       const data = await response.json();
-      
+
       // Update booking in list
       setBookings((prev) =>
         prev.map((booking) =>
           booking._id === bookingId
-            ? { ...booking, status: "accepted", conversation: data.conversation }
+            ? {
+                ...booking,
+                status: "accepted",
+                conversation: data.conversation,
+              }
             : booking
         )
       );
 
       // If chat room was created, navigate to chat
       if (data.conversation?.id) {
-        // You can navigate to chat page here
         console.log("Chat room created:", data.conversation.id);
-        // Example: router.push(`/chats?conversationId=${data.conversation.id}`);
       }
 
       alert("Booking accepted successfully!");
@@ -296,8 +421,8 @@ export default function BookingPage() {
 
   // Reject booking
   const handleReject = async (bookingId) => {
-    if (!salonOwnerId) {
-      alert("Salon owner ID not found");
+    if (!ownerId) {
+      alert("Owner ID not found");
       return;
     }
 
@@ -306,6 +431,12 @@ export default function BookingPage() {
     }
 
     try {
+      // Send appropriate ID based on role
+      const requestBody =
+        userRole === "salon-owner"
+          ? { salonOwnerId: ownerId }
+          : { massagerId: ownerId };
+
       const response = await fetch(
         `${API_BASE_URL}/api/v1/bookings/${bookingId}/reject`,
         {
@@ -313,7 +444,7 @@ export default function BookingPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ salonOwnerId }),
+          body: JSON.stringify(requestBody),
         }
       );
 
@@ -325,7 +456,9 @@ export default function BookingPage() {
       // Update booking in list
       setBookings((prev) =>
         prev.map((booking) =>
-          booking._id === bookingId ? { ...booking, status: "rejected" } : booking
+          booking._id === bookingId
+            ? { ...booking, status: "rejected" }
+            : booking
         )
       );
 
@@ -379,17 +512,17 @@ export default function BookingPage() {
     );
   }
 
-  if (!salonOwnerId) {
+  if (!ownerId) {
     return (
       <div className="w-full h-auto flex items-center justify-center py-20 px-4">
         <div className="text-center max-w-md">
           <div className="text-[#262628] text-lg font-semibold mb-4">
-            {error || "Salon Owner Profile Not Found"}
+            {error || "Profile Not Found"}
           </div>
           <div className="text-[#5F5F60] text-sm mb-4">
-            {error 
+            {error
               ? "Please check your connection and try again."
-              : "Please register as a salon owner first, or manually set your salon owner ID in localStorage."}
+              : "Please complete your profile registration as a salon owner or private massager first."}
           </div>
           {!error && (
             <div className="bg-[#EDCFC9] p-4 rounded-lg text-left">
@@ -400,19 +533,36 @@ export default function BookingPage() {
                 1. Open browser console (F12)
               </div>
               <div className="text-[#5F5F60] text-xs mb-2">
-                2. Run: <code className="bg-white px-1 rounded">localStorage.setItem("salonOwnerId", "YOUR_OWNER_ID")</code>
+                For Salon Owner:{" "}
+                <code className="bg-white px-1 rounded">
+                  localStorage.setItem("salonOwnerId", "YOUR_ID")
+                </code>
+              </div>
+              <div className="text-[#5F5F60] text-xs mb-2">
+                For Private Massager:{" "}
+                <code className="bg-white px-1 rounded">
+                  localStorage.setItem("massagerProfileId", "YOUR_ID")
+                </code>
               </div>
               <div className="text-[#5F5F60] text-xs mb-3">
-                3. The page will automatically detect the change (no refresh needed)
+                3. The page will automatically detect the change
               </div>
               <button
                 onClick={() => {
-                  const storedId = localStorage.getItem("salonOwnerId");
-                  if (storedId) {
-                    setSalonOwnerId(storedId);
-                    console.log("✅ Manually loaded salon owner ID:", storedId);
+                  const salonId =
+                    localStorage.getItem("salonOwnerId") ||
+                    localStorage.getItem("ownerId");
+                  const massagerId = localStorage.getItem("massagerProfileId");
+                  if (salonId) {
+                    setOwnerId(salonId);
+                    setUserRole("salon-owner");
+                    console.log("✅ Manually loaded salon owner ID:", salonId);
+                  } else if (massagerId) {
+                    setOwnerId(massagerId);
+                    setUserRole("private-massager");
+                    console.log("✅ Manually loaded massager ID:", massagerId);
                   } else {
-                    alert("Please set salonOwnerId in localStorage first!");
+                    alert("Please set owner ID in localStorage first!");
                   }
                 }}
                 className="bg-[#D96073] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#C85563] transition-colors"
@@ -429,7 +579,12 @@ export default function BookingPage() {
   return (
     <div className="w-full h-auto">
       <div className="font-bold text-2xl sm:text-3xl md:text-[40px] text-[#262628] px-4 sm:px-8 md:px-12 lg:px-22 pt-8 sm:pt-10 md:pt-12 pb-4 sm:pb-6">
-        Booking Requests
+        Booking Requests{" "}
+        {userRole && (
+          <span className="text-sm text-[#5F5F60]">
+            ({userRole === "salon-owner" ? "Salon Owner" : "Private Massager"})
+          </span>
+        )}
       </div>
       {bookings.length === 0 ? (
         <div className="px-4 sm:px-8 md:px-12 lg:px-22 py-20 text-center text-[#5F5F60]">
@@ -475,10 +630,12 @@ export default function BookingPage() {
                   Weight - {booking.requester.bio?.weightKg || "N/A"}kg
                 </div>
                 <div className="font-normal text-sm leading-tight text-[#5F5F60] mt-2">
-                  Date: {formatDate(booking.appointmentDetails?.requestedDateTime)}
+                  Date:{" "}
+                  {formatDate(booking.appointmentDetails?.requestedDateTime)}
                 </div>
                 <div className="font-normal text-sm leading-tight text-[#5F5F60]">
-                  Duration: {booking.appointmentDetails?.durationMinutes || 60} minutes
+                  Duration: {booking.appointmentDetails?.durationMinutes || 60}{" "}
+                  minutes
                 </div>
               </div>
               {booking.status === "pending" && (
